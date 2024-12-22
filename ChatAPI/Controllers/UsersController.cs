@@ -58,12 +58,15 @@ namespace SignalR_Test.Controllers
             try
             {
                 var jdata = RequestBody();
-                userService.CreateUserAsync(jdata);
-                return Ok(new
+                var data=userService.CreateUserAsync(jdata);
+                if(data.Result.Success)
                 {
-                    message="Success",
-                    jdata
-                });
+                    return Ok(data.Result.Message);
+                }
+                else
+                {
+                    return BadRequest(data.Result.Message);
+                }
             }
             catch(Exception ex)
             {

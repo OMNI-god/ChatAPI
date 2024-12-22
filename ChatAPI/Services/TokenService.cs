@@ -34,7 +34,7 @@ namespace SignalR_Test.Token
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(configuration["jwt:AccessTokenExpirationInMinutes"])),
                 SigningCredentials = signingCredentials,
                 Issuer = configuration["jwt:issuer"],
-                Audience = configuration["jwt:audience"]
+                Audience = configuration["jwt:audience"],
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);

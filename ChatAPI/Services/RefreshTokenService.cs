@@ -20,7 +20,7 @@ namespace SignalR_Test.Token
             {
                 Id = Guid.NewGuid(),
                 Token = GenerateToken(),
-                Expires = DateTime.UtcNow.AddDays(30), 
+                Expires = DateTime.UtcNow.AddDays(Convert.ToInt32(configuration["jwt:RefreshTokenExpirationInDays"])), 
                 Created = DateTime.UtcNow,
                 UserId = Guid.Parse(ID)
 
