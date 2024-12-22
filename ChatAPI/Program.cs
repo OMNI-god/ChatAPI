@@ -15,10 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(/*"AllowFrontend"*/"AllowAll", policy =>
+    options.AddPolicy("AllowFrontend"/*"AllowAll"*/, policy =>
     {
-        //policy.WithOrigins("http://127.0.0.1:3000") // Allow the frontend
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://127.0.0.1:3000") // Allow the frontend
+        //policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials(); // Allow cookies and SignalR credentials
@@ -62,7 +62,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<RefreshTokenService>();
@@ -77,6 +77,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            RequireExpirationTime = true,
             ValidIssuer = builder.Configuration["jwt:issuer"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
         };
@@ -111,7 +112,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowFrontend" /*"AllowAll"*/);
 app.UseAuthentication();
 app.UseAuthorization();
 
