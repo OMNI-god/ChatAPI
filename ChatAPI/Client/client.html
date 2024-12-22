@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalR Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@7.0.5/dist/browser/signalr.min.js"></script>
+</head>
+<body>
+    <h2>Register and Login</h2>
+    <div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+    </div>
+    <h2>Chat</h2>
+    <div>
+        <input type="text" id="user" placeholder="Your Name">
+        <input type="text" id="message" placeholder="Message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <ul id="messages"></ul>
+
+    <script>
+        let connection;
+        let token;
+
+        async function register() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            alert('Registered successfully!');
+        }
+
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            token = data.token;
+            alert('Login successful!');
+            startSignalR();
+        }
+
+        async function startSignalR() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/chat", { accessTokenFactory: () => token })
+                .build();
+
+            connection.on("ReceiveMessage", (user, message) => {
+                const li = document.createElement("li");
+                li.textContent = `${user}: ${message}`;
+                document.getElementById("messages").appendChild(li);
+            });
+
+            await connection.start();
+            console.log("Connected to SignalR hub.");
+        }
+
+        async function sendMessage() {
+            const user = document.getElementById("user").value;
+            const message = document.getElementById("message").value;
+            await connection.invoke("SendMessage", user, message);
+        }
+    </script>
+</body>
+</html>
