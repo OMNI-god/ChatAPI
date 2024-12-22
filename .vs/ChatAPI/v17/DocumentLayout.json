@@ -7,12 +7,28 @@
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\refreshtokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,10 +51,6 @@
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\chatapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -49,14 +61,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\ichathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\ichathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -94,11 +98,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
+              "Title": "WeatherForecast.cs",
+              "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\WeatherForecast.cs",
+              "RelativeDocumentMoniker": "ChatAPI\\WeatherForecast.cs",
+              "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\WeatherForecast.cs",
+              "RelativeToolTip": "ChatAPI\\WeatherForecast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-22T14:24:05.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "OperationResult.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Model\\OperationResult.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Model\\OperationResult.cs",
@@ -110,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "20241219175519_m1.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Migrations\\20241219175519_m1.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Migrations\\20241219175519_m1.cs",
@@ -128,14 +145,14 @@
               "RelativeDocumentMoniker": "ChatAPI\\Program.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Program.cs*",
               "RelativeToolTip": "ChatAPI\\Program.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAD4AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T12:00:42.938Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Model\\RefreshToken.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Model\\RefreshToken.cs",
@@ -147,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "UserService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\UserService.cs",
@@ -159,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Model\\User.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Model\\User.cs",
@@ -171,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Context\\AppDbContext.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Context\\AppDbContext.cs",
@@ -183,31 +200,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 2,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\ChatHub.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\ChatHub.cs",
               "RelativeToolTip": "ChatAPI\\Hubs\\ChatHub.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwC8AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T11:59:48.232Z"
+              "WhenOpened": "2024-09-17T11:59:48.232Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 4,
               "Title": "IChatClient.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\IChatClient.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\IChatClient.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\IChatClient.cs",
               "RelativeToolTip": "ChatAPI\\Hubs\\IChatClient.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:12:26.24Z"
+              "WhenOpened": "2024-09-17T12:12:26.24Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "IChatHub.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\IChatHub.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\IChatHub.cs",
@@ -219,19 +238,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 5,
               "Title": "TokenService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\TokenService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\TokenService.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\TokenService.cs",
               "RelativeToolTip": "ChatAPI\\Services\\TokenService.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwCQAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACQAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T11:56:13.795Z"
+              "WhenOpened": "2024-09-17T11:56:13.795Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "RefreshTokenService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\RefreshTokenService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\RefreshTokenService.cs",
@@ -243,20 +263,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "AuthService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\AuthService.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\AuthService.cs",
               "RelativeToolTip": "ChatAPI\\Services\\AuthService.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAA1wCAAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowCkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T13:53:46.949Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "UsersController.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Controllers\\UsersController.cs",
@@ -264,11 +284,12 @@
               "RelativeToolTip": "ChatAPI\\Controllers\\UsersController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABwAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:02:25.748Z"
+              "WhenOpened": "2024-09-17T12:02:25.748Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "20240917131557_v1.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Migrations\\20240917131557_v1.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Migrations\\20240917131557_v1.cs",
@@ -279,7 +300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "20240917131832_v1.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Migrations\\20240917131832_v1.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Migrations\\20240917131832_v1.cs",
@@ -290,7 +311,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "20240917135319_v2.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Migrations\\20240917135319_v2.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Migrations\\20240917135319_v2.cs",
@@ -301,7 +322,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "20240917140551_v1.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Migrations\\20240917140551_v1.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Migrations\\20240917140551_v1.cs",
@@ -312,7 +333,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "WeatherForecastController.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Controllers\\WeatherForecastController.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Controllers\\WeatherForecastController.cs",
@@ -324,19 +345,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\appsettings.json",
               "RelativeDocumentMoniker": "ChatAPI\\appsettings.json",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\appsettings.json",
               "RelativeToolTip": "ChatAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-17T12:05:44.218Z"
+              "WhenOpened": "2024-09-17T12:05:44.218Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "ChatAPI.csproj",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
               "RelativeDocumentMoniker": "ChatAPI\\ChatAPI.csproj",

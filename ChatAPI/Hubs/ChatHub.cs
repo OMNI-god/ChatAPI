@@ -49,6 +49,11 @@ namespace SignalR_Test.Hubs
                 await Clients.Client(jdata.to.ToString()).ReceiveMessageAsync(jdata.msg.ToString());
             }
         }
+        public async Task SendMessageToAllAsync(string jsonData)
+        {
+            var jdata = JSONDeserialize(jsonData);
+            await Clients.All.ReceiveMessageAsync(jdata.msg.ToString());
+        }
         private async Task ConnectionMessage(string connID)
         {
             await Clients.Client(connID).ReceiveConnIDAsync(connID);
@@ -57,6 +62,5 @@ namespace SignalR_Test.Hubs
         {
             return JsonConvert.DeserializeObject<dynamic>(jsonData);
         }
-
     }
 }

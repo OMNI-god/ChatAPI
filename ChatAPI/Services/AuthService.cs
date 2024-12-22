@@ -32,6 +32,8 @@ namespace SignalR_Test.Services
                 {
                     jwtToken = tokenService.CreateToken(user);
                     refreshToken = refreshTokenService.CreateRefreshToken(user.Id.ToString()).Token;
+                    context.RefreshTokens.Remove(token);
+                    context.SaveChanges();
                 }
                 else
                 {
