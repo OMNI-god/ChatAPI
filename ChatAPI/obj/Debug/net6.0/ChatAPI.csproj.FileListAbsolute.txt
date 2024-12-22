@@ -69,3 +69,4 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Win
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\Humanizer.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\ChatAPI.csproj.Up2Date
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\ChatAPI.sourcelink.json
