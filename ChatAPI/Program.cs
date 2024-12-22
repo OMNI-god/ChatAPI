@@ -15,9 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy(/*"AllowFrontend"*/"AllowAll", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:3000") // Allow the frontend
+        //policy.WithOrigins("http://127.0.0.1:3000") // Allow the frontend
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials(); // Allow cookies and SignalR credentials
