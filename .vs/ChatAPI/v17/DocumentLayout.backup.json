@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "D:\\C#\\ChatAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\ichathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\ichathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,16 +27,8 @@
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\hubs\\ichatclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,16 +43,8 @@
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\model\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|solutionrelative:chatapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66D17822-D822-43AC-97B0-803D7A845A74}|ChatAPI\\ChatAPI.csproj|d:\\c#\\chatapi\\chatapi\\context\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -90,8 +90,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 19,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 19,
@@ -107,20 +111,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Program.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Program.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Program.cs",
               "RelativeToolTip": "ChatAPI\\Program.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEoAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADMAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T12:00:42.938Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Model\\RefreshToken.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Model\\RefreshToken.cs",
@@ -133,20 +137,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 2,
               "Title": "UserService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\UserService.cs",
               "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\UserService.cs",
               "RelativeToolTip": "ChatAPI\\Services\\UserService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAIBJwBYAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwBYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T12:53:38.292Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Model\\User.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Model\\User.cs",
@@ -172,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\ChatHub.cs",
@@ -185,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "IChatClient.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\IChatClient.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\IChatClient.cs",
@@ -198,7 +202,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "IChatHub.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Hubs\\IChatHub.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Hubs\\IChatHub.cs",
@@ -211,7 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "TokenService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\TokenService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\TokenService.cs",
@@ -237,7 +241,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "AuthService.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Services\\AuthService.cs",
@@ -250,7 +254,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "UsersController.cs",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "ChatAPI\\Controllers\\UsersController.cs",
@@ -320,13 +324,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\C#\\ChatAPI\\ChatAPI\\appsettings.json",
               "RelativeDocumentMoniker": "ChatAPI\\appsettings.json",
-              "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\appsettings.json",
-              "RelativeToolTip": "ChatAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAmAAAAAAAAAA==",
+              "ToolTip": "D:\\C#\\ChatAPI\\ChatAPI\\appsettings.json*",
+              "RelativeToolTip": "ChatAPI\\appsettings.json*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-09-17T12:05:44.218Z",
               "EditorCaption": ""
@@ -341,8 +345,7 @@
               "RelativeToolTip": "ChatAPI\\ChatAPI.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-09-19T09:03:46.176Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T09:03:46.176Z"
             }
           ]
         }
