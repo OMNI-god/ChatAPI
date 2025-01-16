@@ -26,11 +26,13 @@
         let connection;
         let token;
 
+        const apiBaseUrl = "https://localhost:7195"; // Base URL of the API
+
         async function register() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            await fetch('/api/auth/register', {
+            await fetch(`${apiBaseUrl}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -42,7 +44,7 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -56,7 +58,7 @@
 
         async function startSignalR() {
             connection = new signalR.HubConnectionBuilder()
-                .withUrl("/chat", { accessTokenFactory: () => token })
+                .withUrl(`${apiBaseUrl}/chat`, { accessTokenFactory: () => token })
                 .build();
 
             connection.on("ReceiveMessage", (user, message) => {

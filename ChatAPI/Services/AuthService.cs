@@ -57,7 +57,6 @@ namespace SignalR_Test.Services
             {
                 var user = context.Users.FirstOrDefault(x => x.Id.ToString() == userId);
                 var jwtToken = tokenService.CreateToken(user);
-                refreshToken.Revoked = DateTime.UtcNow;
                 var newRefreshToken = refreshTokenService.CreateRefreshToken(userId);
                 context.SaveChanges();
                 return jwtToken;
@@ -66,16 +65,17 @@ namespace SignalR_Test.Services
         }
         public void RevokeToken(string tokenValue)
         {
-            var token = context.RefreshTokens.FirstOrDefault(rt => rt.Token == tokenValue);
+            var refreshToken = context.RefreshTokens.FirstOrDefault(rt => rt.Token == tokenValue);
 
-            if (token == null || token.IsExpired || token.Revoked != null)
+            if (refreshToken == null || refreshToken.IsExpired)
             {
-
+                context.RefreshTokens.Remove(refreshToken);
+                context.SaveChanges();
             }
             else
             {
-                token.Revoked = DateTime.UtcNow;
-                context.SaveChanges();
+                //refreshToken.Revoked = DateTime.UtcNow;
+                //context.SaveChanges();
             }
         }
     }

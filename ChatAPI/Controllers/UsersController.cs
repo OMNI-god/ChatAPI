@@ -1,8 +1,10 @@
-﻿using ChatAPI.Services;
+﻿using ChatAPI.Model;
+using ChatAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalR_Test.Models;
 using SignalR_Test.Services;
+using System.Net;
 using System.Text;
 
 namespace SignalR_Test.Controllers
@@ -27,15 +29,20 @@ namespace SignalR_Test.Controllers
             {
                 var jdata = RequestBody();
                 var (token, refreshToken) = authService.Authenticate((string)jdata.username, (string)jdata.password);
-                return Ok(new
+                return Ok(new OperationResult
                 {
-                    Token = token,
-                    RefreshToken = refreshToken,
+                    HTTPCode = HttpStatusCode.OK,
+                    Message = "Success",
+                    Payload = new { token = token, refreshToken = refreshToken }
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.BadRequest,
+                    Message = ex.Message
+                });
             }
         }
         [HttpPost]

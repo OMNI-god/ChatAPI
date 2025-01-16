@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SignalR_Test.Contexts;
 using SignalR_Test.Models;
+using System.Net;
 
 namespace ChatAPI.Services
 {
@@ -26,8 +27,8 @@ namespace ChatAPI.Services
             {
                 return new OperationResult
                 {
-                    Success = false,
-                    Message = "Username already taken"
+                    HTTPCode=HttpStatusCode.Conflict,
+                    Message = "User already exists",
                 };
             }
 
@@ -43,7 +44,7 @@ namespace ChatAPI.Services
 
             return new OperationResult
             {
-                Success = true,
+                HTTPCode = HttpStatusCode.Created,
                 Message = "User created successfully",
             };
         }

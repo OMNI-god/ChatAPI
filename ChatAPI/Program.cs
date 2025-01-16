@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<RefreshTokenService>();
