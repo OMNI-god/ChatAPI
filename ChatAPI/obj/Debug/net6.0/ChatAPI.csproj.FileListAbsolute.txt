@@ -70,3 +70,7 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\Humanizer.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\ChatAPI.csproj.Up2Date
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\ChatAPI.sourcelink.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net6.0\ChatAPI.staticwebassets.endpoints.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\staticwebassets\msbuild.ChatAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SignalR_Test.Contexts;
 using SignalR_Test.Models;
+using System.Net;
 
 namespace ChatAPI.Services
 {
@@ -22,30 +23,43 @@ namespace ChatAPI.Services
 
         public async Task<OperationResult> CreateUserAsync(dynamic data)
         {
-            if (IsRegistered((string)data.username))
+            try
+            {
+                if (IsRegistered((string)data.username))
+                {
+                    return new OperationResult
+                    {
+                        HTTPCode = HttpStatusCode.Conflict,
+                        Message = "User already exists",
+                    };
+                }
+
+                User user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Username = (string)data.username,
+                    Email="test@mail.com",
+                    PasswordHash = (string)data.password,
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                return new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.Created,
+                    Message = "User created successfully",
+                    Payload = new { username = user.Username, email = user.Email }
+                };
+            }
+            catch (Exception ex)
             {
                 return new OperationResult
                 {
-                    Success = false,
-                    Message = "Username already taken"
+                    HTTPCode = HttpStatusCode.BadRequest,
+                    Message = ex.Message
                 };
             }
-
-            User user = new User
-            {
-                Id = Guid.NewGuid(),
-                Username = (string)data.username,
-                PasswordHash = (string)data.password,
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new OperationResult
-            {
-                Success = true,
-                Message = "User created successfully",
-            };
         }
         private bool IsRegistered(string username)
         {

@@ -1,8 +1,11 @@
-﻿using ChatAPI.Services;
+﻿using ChatAPI.Model;
+using ChatAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SignalR_Test.ConnectionManager;
 using SignalR_Test.Models;
 using SignalR_Test.Services;
+using System.Net;
 using System.Text;
 
 namespace SignalR_Test.Controllers
@@ -13,11 +16,13 @@ namespace SignalR_Test.Controllers
     {
         private readonly AuthService authService;
         private readonly UserService userService;
+        private readonly IConnectionManager connectionManager;
 
-        public UsersController(AuthService authService,UserService userService)
+        public UsersController(AuthService authService,UserService userService,IConnectionManager connectionManager)
         {
             this.authService = authService;
             this.userService = userService;
+            this.connectionManager = connectionManager;
         }
 
         [HttpPost]
@@ -27,15 +32,20 @@ namespace SignalR_Test.Controllers
             {
                 var jdata = RequestBody();
                 var (token, refreshToken) = authService.Authenticate((string)jdata.username, (string)jdata.password);
-                return Ok(new
+                return Ok(new OperationResult
                 {
-                    Token = token,
-                    RefreshToken = refreshToken,
+                    HTTPCode = HttpStatusCode.OK,
+                    Message = "Login Success",
+                    Payload = new { token = token, refreshToken = refreshToken }
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.BadRequest,
+                    Message = ex.Message
+                });
             }
         }
         [HttpPost]
@@ -45,11 +55,20 @@ namespace SignalR_Test.Controllers
             {
                 var jdata = RequestBody();
                 authService.RevokeToken((string)jdata.refreshToken);
-                return Ok();
+                connectionManager.RemoveConnection((string)jdata.connectionId); 
+                return Ok(new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.OK,
+                    Message = "Logout Success"
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.BadRequest,
+                    Message = ex.Message
+                });
             }
         }
         [HttpPost]
@@ -59,18 +78,22 @@ namespace SignalR_Test.Controllers
             {
                 var jdata = RequestBody();
                 var data=userService.CreateUserAsync(jdata);
-                if(data.Result.Success)
+                if(data.Result.HTTPCode==HttpStatusCode.OK)
                 {
-                    return Ok(data.Result.Message);
+                    return Ok(data.Result);
                 }
                 else
                 {
-                    return BadRequest(data.Result.Message);
+                    return Conflict(data.Result);
                 }
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new OperationResult
+                {
+                    HTTPCode = HttpStatusCode.BadRequest,
+                    Message = ex.Message
+                });
             }
         }
         private dynamic RequestBody()
