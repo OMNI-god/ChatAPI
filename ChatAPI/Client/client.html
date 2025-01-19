@@ -26,17 +26,18 @@
         let connection;
         let token;
 
-        const apiBaseUrl = "https://localhost:7195"; // Base URL of the API
+        const apiBaseUrl = "https://localhost:7038"; // Base URL of the API
 
         async function register() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            await fetch(`${apiBaseUrl}/api/auth/register`, {
+            const response=await fetch(`${apiBaseUrl}/api/Users/Register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
+            console.log(await response.json());
             alert('Registered successfully!');
         }
 
@@ -44,7 +45,7 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
+            const response = await fetch(`${apiBaseUrl}/api/Users/Login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
