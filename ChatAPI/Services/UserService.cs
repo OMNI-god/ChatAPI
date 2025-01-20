@@ -40,6 +40,7 @@ namespace ChatAPI.Services
                     Username = (string)data.username,
                     Email="test@mail.com",
                     PasswordHash = (string)data.password,
+                    ProfilePicture=""
                 };
 
                 _context.Users.Add(user);
@@ -57,7 +58,7 @@ namespace ChatAPI.Services
                 return new OperationResult
                 {
                     HTTPCode = HttpStatusCode.BadRequest,
-                    Message = ex.Message
+                    Message = $"{ex.Message}\n{ex.InnerException}"
                 };
             }
         }

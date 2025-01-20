@@ -15,7 +15,7 @@ namespace SignalR_Test.Services
             this.refreshTokenService = refreshTokenService;
 
         }
-        public (string jwtToken, string refreshToken) Authenticate(string username, string password)
+        public (string jwtToken, string refreshToken,string userId) Authenticate(string username, string password)
         {
             string jwtToken = string.Empty, refreshToken = string.Empty;
             var user = context.Users.SingleOrDefault(u => u.Username == username && u.PasswordHash == password);
@@ -48,7 +48,7 @@ namespace SignalR_Test.Services
             }
 
 
-            return (jwtToken, refreshToken);
+            return (jwtToken, refreshToken,user.Id.ToString());
         }
         public string RefreshJwtToken(string refreshTokenValue, string userId)
         {

@@ -1,6 +1,7 @@
 ﻿using ChatAPI.Model;
 using ChatAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.Server;
 using Newtonsoft.Json;
 using SignalR_Test.ConnectionManager;
 using SignalR_Test.Models;
@@ -31,12 +32,12 @@ namespace SignalR_Test.Controllers
             try
             {
                 var jdata = RequestBody();
-                var (token, refreshToken) = authService.Authenticate((string)jdata.username, (string)jdata.password);
+                var (token, refreshToken,userId) = authService.Authenticate((string)jdata.username, (string)jdata.password);
                 return Ok(new OperationResult
                 {
                     HTTPCode = HttpStatusCode.OK,
                     Message = "Login Success",
-                    Payload = new { token = token, refreshToken = refreshToken }
+                    Payload = new { token = token, refreshToken = refreshToken,userId=userId }
                 });
             }
             catch (Exception ex)
@@ -78,9 +79,9 @@ namespace SignalR_Test.Controllers
             {
                 var jdata = RequestBody();
                 var data=userService.CreateUserAsync(jdata);
-                if(data.Result.HTTPCode==HttpStatusCode.OK)
+                if(data.Result.HTTPCode==HttpStatusCode.Created)
                 {
-                    return Ok(data.Result);
+                    return Created("Register",data.Result);
                 }
                 else
                 {

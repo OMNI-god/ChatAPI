@@ -6,6 +6,62 @@
     "version": "v1"
   },
   "paths": {
+    "/api/ChatHistory/GetChatHistory": {
+      "get": {
+        "tags": [
+          "ChatHistory"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ChatHistory/AddChatHistory": {
+      "post": {
+        "tags": [
+          "ChatHistory"
+        ],
+        "parameters": [
+          {
+            "name": "user_1_Id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_2_ID",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "data",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Users/Login": {
       "post": {
         "tags": [

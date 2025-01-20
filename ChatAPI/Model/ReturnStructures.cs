@@ -22,13 +22,13 @@ namespace ChatAPI.Model
         public Guid id { get; set; }
         public string sender { get; set; }
         public string profile_pic { get; set; }
-        public Object[] chat { get; set; }
+        public Chat[] chat { get; set; }
     }
     public struct Chat
     {
         public string text { get; set; }
         public DateTime time { get; set; }
-        public bool isSender { get; set; }
+        public string from { get; set; }
         public bool isSeen { get; set; }
     }
 }
