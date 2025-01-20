@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignalR Client</title>
     <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@7.0.5/dist/browser/signalr.min.js"></script>
 </head>
+
 <body>
     <h2>Register and Login</h2>
     <div>
@@ -25,6 +27,7 @@
     <script>
         let connection;
         let token;
+        let userId;
 
         const apiBaseUrl = "https://localhost:7038"; // Base URL of the API
 
@@ -32,7 +35,7 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            const response=await fetch(`${apiBaseUrl}/api/Users/Register`, {
+            const response = await fetch(`${apiBaseUrl}/api/Users/Register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -52,19 +55,24 @@
             });
 
             const data = await response.json();
-            token = data.token;
+            token = data.payload.token;
+            userId = data.payload.userId;
             alert('Login successful!');
             startSignalR();
         }
 
         async function startSignalR() {
             connection = new signalR.HubConnectionBuilder()
-                .withUrl(`${apiBaseUrl}/chat`, { accessTokenFactory: () => token })
+                .withUrl(`${apiBaseUrl}/chat?userId=${userId}`, { accessTokenFactory: () => token })
                 .build();
 
-            connection.on("ReceiveMessage", (user, message) => {
+            connection.on("ReceiveConnIDAsync", (connectionId) => {
+                console.log("Received connection ID from server:", connectionId);
+                // Optionally store or use the connection ID as needed
+            });
+            connection.on("ReceiveMessageAsync", (msg) => {
                 const li = document.createElement("li");
-                li.textContent = `${user}: ${message}`;
+                li.textContent = `${msg}`;
                 document.getElementById("messages").appendChild(li);
             });
 
@@ -75,8 +83,9 @@
         async function sendMessage() {
             const user = document.getElementById("user").value;
             const message = document.getElementById("message").value;
-            await connection.invoke("SendMessage", user, message);
+            await connection.invoke("SendMessageToAllAsync", JSON.stringify({ to:"",from:"",msg:message }));
         }
     </script>
 </body>
+
 </html>

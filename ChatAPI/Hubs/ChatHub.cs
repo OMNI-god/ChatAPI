@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using ChatAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -10,15 +10,18 @@ namespace SignalR_Test.Hubs
     public class ChatHub : Hub<IChatClient>, IChatHub
     {
         private readonly IConnectionManager _manager;
-        public ChatHub(IConnectionManager _manager)
+        private readonly ChatHistoryService chatHistoryService;
+        public ChatHub(IConnectionManager _manager, ChatHistoryService chatHistoryService)
         {
             this._manager = _manager;
+            this.chatHistoryService = chatHistoryService;
         }
         public override async Task OnConnectedAsync()
-        {    
+        {
+            string userId = Context.GetHttpContext().Request.Query["userId"];
             await ConnectionMessage(Context.ConnectionId.ToString());
             await base.OnConnectedAsync();
-            _manager.AddConnection(Context.ConnectionId.ToString());
+            _manager.AddConnection(userId, Context.ConnectionId.ToString());
         }
         public override async Task OnDisconnectedAsync(Exception ex)
         {
@@ -46,13 +49,21 @@ namespace SignalR_Test.Hubs
             var jdata = JSONDeserialize(jsonData);
             if (_manager.IsConnected(jdata.to.ToString()))
             {
+                if (!(string.IsNullOrEmpty(jdata.to.ToString()) || string.IsNullOrEmpty(jdata.from.ToString())))
+                {
+                    chatHistoryService.AddChatHistory(jdata.from.ToString(), jdata.to.ToString(), new { text = jdata.msg, time = DateTime.UtcNow.TimeOfDay, from = jdata.from }.ToString());
+                }
                 await Clients.Client(jdata.to.ToString()).ReceiveMessageAsync(jdata.msg.ToString());
+            }
+            else if (!(string.IsNullOrEmpty(jdata.to.ToString()) || string.IsNullOrEmpty(jdata.from.ToString())))
+            {
+                chatHistoryService.AddChatHistory(jdata.from.ToString(), jdata.to.ToString(), new { text = jdata.msg, time = DateTime.UtcNow.TimeOfDay, from = jdata.from }.ToString());
             }
         }
         public async Task SendMessageToAllAsync(string jsonData)
         {
             var jdata = JSONDeserialize(jsonData);
-            await Clients.All.ReceiveMessageAsync(jdata.msg.ToString());
+            await Clients.All.ReceiveMessageAsync(jsonData);
         }
         private async Task ConnectionMessage(string connID)
         {

@@ -1,10 +1,12 @@
-﻿namespace SignalR_Test.ConnectionManager
+﻿using System.Collections.Specialized;
+
+namespace SignalR_Test.ConnectionManager
 {
     public interface IConnectionManager
     {
-        void AddConnection(string connID);
-        void RemoveConnection(string connID);
-        bool IsConnected(string connID);
-        HashSet<string> Connections();
+        void AddConnection(string userId,string connId);
+        void RemoveConnection(string userId);
+        bool IsConnected(string userId);
+        StringDictionary Connections();
     }
 }

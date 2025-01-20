@@ -1,5 +1,47 @@
 [
   {
+    "ContainingType": "ChatAPI.Controllers.ChatHistoryController",
+    "Method": "AddChatHistory",
+    "RelativePath": "api/ChatHistory/AddChatHistory",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user_1_Id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "user_2_ID",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "data",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ChatAPI.Controllers.ChatHistoryController",
+    "Method": "GetChatHistory",
+    "RelativePath": "api/ChatHistory/GetChatHistory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SignalR_Test.Controllers.UsersController",
     "Method": "Login",
     "RelativePath": "api/Users/Login",

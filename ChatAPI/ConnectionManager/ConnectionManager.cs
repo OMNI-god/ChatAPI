@@ -1,27 +1,36 @@
-﻿namespace SignalR_Test.ConnectionManager
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+
+namespace SignalR_Test.ConnectionManager
 {
     public class ConnectionManager : IConnectionManager
     {
-        private HashSet<string> connections = new HashSet<string>();
+        private StringDictionary connections = new StringDictionary();
         
-        public void AddConnection(string connID)
+        public void AddConnection(string userId,string connId)
         {
-            connections.Add(connID);
+            if(IsConnected(userId))
+            {
+                //connections[userId] = connId;
+                return;
+            }
+            connections.Add(userId,connId);
+            Console.WriteLine(connections.Count);
         }
 
-        public HashSet<string> Connections()
+        public StringDictionary Connections()
         {
             return connections;
         }
 
-        public bool IsConnected(string connID)
+        public bool IsConnected(string userId)
         {
-            return connections.Any(x=>x.Equals(connID));
+            return connections.ContainsKey(userId);
         }
 
-        public void RemoveConnection(string connID)
+        public void RemoveConnection(string userId)
         {
-            connections.Remove(connID);
+            connections.Remove(userId);
         }
     }
 }
