@@ -69,7 +69,7 @@ builder.Services.AddSwaggerGen(options =>
 
     //options.SchemaFilter
 });
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
 builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<RefreshTokenService>();
