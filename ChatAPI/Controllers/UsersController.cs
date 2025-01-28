@@ -1,7 +1,6 @@
 ﻿using ChatAPI.Model;
 using ChatAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient.Server;
 using Newtonsoft.Json;
 using SignalR_Test.ConnectionManager;
 using SignalR_Test.Models;
