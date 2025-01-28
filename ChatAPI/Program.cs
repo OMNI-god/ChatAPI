@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:8081") // Allow the frontend
+        policy.WithOrigins("http://127.0.0.1:8081","") // Allow the frontend
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials(); // Allow cookies and SignalR credentials
@@ -26,7 +26,8 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 builder.Services.AddControllers();
@@ -120,7 +121,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
