@@ -31,12 +31,12 @@ namespace SignalR_Test.Controllers
             try
             {
                 var jdata = RequestBody();
-                var (token, refreshToken,userId) = authService.Authenticate((string)jdata.username, (string)jdata.password);
+                var (token, refreshToken,userId,userEmail,userName) = authService.Authenticate((string)jdata.username, (string)jdata.password);
                 return Ok(new OperationResult
                 {
                     HTTPCode = HttpStatusCode.OK,
                     Message = "Login Success",
-                    Payload = new { token = token, refreshToken = refreshToken,userId=userId }
+                    Payload = new { token = token, refreshToken = refreshToken,userId=userId,userEmail=userEmail,userName=userName }
                 });
             }
             catch (Exception ex)
