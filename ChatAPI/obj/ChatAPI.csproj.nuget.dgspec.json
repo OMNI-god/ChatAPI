@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\C#\\ChatAPI\\ChatAPI\\ChatAPI.csproj": {}
+    "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\ChatAPI.csproj": {}
   },
   "projects": {
-    "D:\\C#\\ChatAPI\\ChatAPI\\ChatAPI.csproj": {
+    "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\ChatAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C#\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
+        "projectUniqueName": "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
         "projectName": "ChatAPI",
-        "projectPath": "D:\\C#\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
-        "packagesPath": "C:\\Users\\jawda\\.nuget\\packages\\",
-        "outputPath": "D:\\C#\\ChatAPI\\ChatAPI\\obj\\",
+        "projectPath": "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
+        "packagesPath": "C:\\Users\\rupayan.mondal\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jawda\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\rupayan.mondal\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,8 +39,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net6.0": {
@@ -101,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     }
