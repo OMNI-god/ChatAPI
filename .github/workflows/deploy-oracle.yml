@@ -1,0 +1,81 @@
+name: Deploy to Oracle VM
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Publish .NET Project
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Ensure target directory exists on Oracle VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p /home/ubuntu/ChatAPI
+
+      - name: Fix permissions on target directory
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            sudo chown -R $USER:$USER /home/ubuntu/ChatAPI
+            sudo chmod -R u+rw /home/ubuntu/ChatAPI
+
+      - name: Stop ASP.NET Core service on Oracle VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            sudo systemctl stop ChatAPI
+
+      - name: Clean old files from target directory
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            sudo rm -rf /home/ubuntu/ChatAPI/*
+
+      - name: Copy published files to Oracle VM
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          source: "./publish/*"
+          target: "/home/ubuntu/ChatAPI"
+          strip_components: 1
+
+      - name: Restart ASP.NET Core service on Oracle VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            sudo systemctl daemon-reload
+            sudo systemctl restart ChatAPI
+            sudo systemctl status ChatAPI --no-pager
