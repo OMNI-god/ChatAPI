@@ -11,7 +11,7 @@ using SignalR_Test.Token;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.UseUrls("http://0.0.0.0:5002");
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
