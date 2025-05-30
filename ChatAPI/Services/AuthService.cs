@@ -18,7 +18,7 @@ namespace SignalR_Test.Services
         public (string jwtToken, string refreshToken,string userId,string userEmail,string userName) Authenticate(string username, string password)
         {
             string jwtToken = string.Empty, refreshToken = string.Empty;
-            var user = context.Users.SingleOrDefault(u => u.Username == username && u.PasswordHash == password);
+            var user = context.Users.SingleOrDefault(u => u.UserName == username && u.PasswordHash == password);
 
             if (user == null)
             {
