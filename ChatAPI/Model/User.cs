@@ -1,12 +1,9 @@
-﻿namespace SignalR_Test.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace SignalR_Test.Models
 {
-    public class User
+    public class User:IdentityUser
     {
-        public Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string ProfilePicture { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }

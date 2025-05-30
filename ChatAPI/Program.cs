@@ -1,11 +1,16 @@
+using ChatAPI.Context;
+using ChatAPI.Mappings;
 using ChatAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using SignalR_Test.ConnectionManager;
 using SignalR_Test.Contexts;
 using SignalR_Test.Hubs;
+using SignalR_Test.Models;
 using SignalR_Test.Services;
 using SignalR_Test.Token;
 using System.Text;
@@ -13,45 +18,65 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:5002");
 // Add services to the container.
-builder.Services.AddCors(options =>
+
+// Configure Serilog for logging
+var logger=new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/ChatAPI_Log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+//DB connection
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
+builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
+
+//auto mapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+//identity user
+builder.Services.AddIdentityCore<User>(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+}).AddRoles<IdentityRole>()
+.AddTokenProvider<DataProtectorTokenProvider<User>>("ChatAPI")
+.AddEntityFrameworkStores<AppAuthDbContext>()
+.AddDefaultTokenProviders();
+
+//authentication jwt bearer
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        policy.WithOrigins("http://127.0.0.1:8081","") // Allow the frontend
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials(); // Allow cookies and SignalR credentials
-    });
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["jwt:issuer"],
+        ValidAudience = builder.Configuration["jwt:audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
+    };
 });
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+//swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "SignalR JWT API",
-        Version = "v1",
-        Description = "API documentation for the SignalR application with JWT authentication"
-    });
-
-    // Add JWT Authentication to Swagger
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.SwaggerDoc("V1", new OpenApiInfo { Title = "ChatAPI", Version = "V1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
         In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: Bearer eyJhbGciOiJIUz..."
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\""
     });
-
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -60,55 +85,32 @@ builder.Services.AddSwaggerGen(options =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme = "oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header
             },
-            Array.Empty<string>()
+            new List<string>()
         }
     });
-
-    //options.SchemaFilter
 });
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
-builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
-builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<RefreshTokenService>();
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<ChatHistoryService>();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            RequireExpirationTime = true,
-            ValidIssuer = builder.Configuration["jwt:issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
-        };
 
-        options.Events = new JwtBearerEvents
-        {
-            OnMessageReceived = context =>
-            {
-                var accessToken = context.Request.Query["access_token"];
-                var path = context.HttpContext.Request.Path;
-
-                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
-                {
-                    context.Token = accessToken;
-                }
-
-                return Task.CompletedTask;
-            }
-        };
-    });
-builder.Services.AddAuthorization(); 
+//web scoket
 builder.Services.AddSignalR();
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
+
+//Migrate the database
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+    var dbAuthContext = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

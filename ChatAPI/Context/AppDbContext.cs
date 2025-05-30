@@ -13,19 +13,30 @@ namespace SignalR_Test.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            ////psql
+            //modelBuilder.Entity<RefreshToken>()
+            //    .HasOne(rt => rt.User)
+            //    .WithMany(u => u.RefreshTokens)
+            //    .HasForeignKey(rt => rt.UserId);
+            //modelBuilder.Entity<RefreshToken>()
+            //    .Property(rt => rt.Created)
+            //    .HasDefaultValueSql("GETUTCDATE()");
+            //modelBuilder.Entity<RefreshToken>()
+            //    .Property(rt => rt.Expires)
+            //    .HasDefaultValueSql($"DATEADD(DAY, {configuration.GetValue<string>("jwt:RefreshTokenExpirationInDays")}, GETUTCDATE())");
+            //mssql
             modelBuilder.Entity<RefreshToken>()
                 .HasOne(rt => rt.User)
                 .WithMany(u => u.RefreshTokens)
                 .HasForeignKey(rt => rt.UserId);
             modelBuilder.Entity<RefreshToken>()
                 .Property(rt => rt.Created)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValue(DateTime.UtcNow);
             modelBuilder.Entity<RefreshToken>()
                 .Property(rt => rt.Expires)
-                .HasDefaultValueSql($"DATEADD(DAY, {configuration.GetValue<string>("jwt:RefreshTokenExpirationInDays")}, GETUTCDATE())");
+                .HasDefaultValue(DateTime.UtcNow.AddDays(Convert.ToInt32(configuration["jwt:RefreshTokenExpirationInDays"])));
         }
-
-        public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ChatHistory> ChatHistory { get; set; }
     }
