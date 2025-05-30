@@ -139,8 +139,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -151,8 +155,7 @@
               "RelativeToolTip": "ChatAPI\\Mappings\\AutoMapperProfile.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T06:50:57.668Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-30T06:50:57.668Z"
             },
             {
               "$type": "Document",
@@ -164,8 +167,7 @@
               "RelativeToolTip": "ChatAPI\\Context\\AppAuthDbContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACcAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T05:04:30.827Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-30T05:04:30.827Z"
             },
             {
               "$type": "Document",
@@ -177,8 +179,7 @@
               "RelativeToolTip": "ChatAPI\\Context\\AppDbContext.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAACYAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T11:59:58.194Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T11:59:58.194Z"
             },
             {
               "$type": "Document",
@@ -188,7 +189,7 @@
               "RelativeDocumentMoniker": "ChatAPI\\Program.cs",
               "ToolTip": "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\Program.cs",
               "RelativeToolTip": "ChatAPI\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFUAAAARAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAFUAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T12:00:42.938Z",
               "EditorCaption": ""
@@ -203,8 +204,7 @@
               "RelativeToolTip": "ChatAPI\\Model\\User.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:49:20.088Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:49:20.088Z"
             },
             {
               "$type": "Document",
@@ -216,8 +216,7 @@
               "RelativeToolTip": "ChatAPI\\Model\\ReturnStructures.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-20T07:17:15.107Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-20T07:17:15.107Z"
             },
             {
               "$type": "Document",
@@ -229,8 +228,7 @@
               "RelativeToolTip": "ChatAPI\\Model\\RefreshToken.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-16T15:09:26.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-16T15:09:26.538Z"
             },
             {
               "$type": "Document",
@@ -242,8 +240,7 @@
               "RelativeToolTip": "ChatAPI\\Services\\AuthService.cs",
               "ViewState": "AQIAACAAAAAAAAAAAAAwwDIAAABOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T13:53:46.949Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T13:53:46.949Z"
             },
             {
               "$type": "Document",
@@ -255,8 +252,7 @@
               "RelativeToolTip": "ChatAPI\\Controllers\\UsersController.cs",
               "ViewState": "AQIAACoAAAAAAAAAAAAowDkAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:02:25.748Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:02:25.748Z"
             },
             {
               "$type": "Document",
@@ -268,8 +264,7 @@
               "RelativeToolTip": "ChatAPI\\Controllers\\ChatHistoryController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T03:42:02.508Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-17T03:42:02.508Z"
             },
             {
               "$type": "Document",
@@ -281,8 +276,7 @@
               "RelativeToolTip": "ChatAPI\\Model\\ChatHistory.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-16T21:30:16.09Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-16T21:30:16.09Z"
             },
             {
               "$type": "Document",
@@ -294,8 +288,7 @@
               "RelativeToolTip": "ChatAPI\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-17T12:05:44.218Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:05:44.218Z"
             },
             {
               "$type": "Document",
@@ -306,8 +299,7 @@
               "ToolTip": "C:\\Users\\rupayan.mondal\\OneDrive - Accenture\\Desktop\\ChatAPI\\ChatAPI\\ChatAPI.csproj",
               "RelativeToolTip": "ChatAPI\\ChatAPI.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-05-30T04:16:57.992Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-30T04:16:57.992Z"
             },
             {
               "$type": "Document",
@@ -328,8 +320,7 @@
               "RelativeToolTip": "ChatAPI\\Client\\client.html",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-01-16T23:05:51.333Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-16T23:05:51.333Z"
             },
             {
               "$type": "Document",
@@ -341,8 +332,7 @@
               "RelativeToolTip": "ChatAPI\\ChatAPI.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-09-19T09:03:46.176Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T09:03:46.176Z"
             },
             {
               "$type": "Document",
@@ -354,8 +344,7 @@
               "RelativeToolTip": "ChatAPI\\Migrations\\20250117014956_initial.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T01:49:56.277Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-17T01:49:56.277Z"
             },
             {
               "$type": "Document",
@@ -388,8 +377,7 @@
               "RelativeToolTip": "ChatAPI\\Services\\RefreshTokenService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-16T15:02:06.855Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-16T15:02:06.855Z"
             },
             {
               "$type": "Document",
@@ -401,8 +389,7 @@
               "RelativeToolTip": "ChatAPI\\Services\\ChatHistoryService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T16:02:12.016Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-17T16:02:12.016Z"
             },
             {
               "$type": "Document",
@@ -414,8 +401,7 @@
               "RelativeToolTip": "ChatAPI\\Migrations\\20250117184004_added_profile_pic_column.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T18:40:05.052Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-17T18:40:05.052Z"
             },
             {
               "$type": "Document",
@@ -427,8 +413,7 @@
               "RelativeToolTip": "ChatAPI\\Migrations\\20250120071003_chatlogs.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-20T07:10:04.335Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-20T07:10:04.335Z"
             },
             {
               "$type": "Document",
@@ -440,8 +425,7 @@
               "RelativeToolTip": "ChatAPI\\WeatherForecast.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-22T14:24:05.835Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-22T14:24:05.835Z"
             },
             {
               "$type": "Document",
@@ -453,8 +437,7 @@
               "RelativeToolTip": "ChatAPI\\Services\\UserService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:53:38.292Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:53:38.292Z"
             },
             {
               "$type": "Document",
@@ -466,8 +449,7 @@
               "RelativeToolTip": "ChatAPI\\Hubs\\ChatHub.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T11:59:48.232Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T11:59:48.232Z"
             },
             {
               "$type": "Document",
@@ -479,8 +461,7 @@
               "RelativeToolTip": "ChatAPI\\Hubs\\IChatClient.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:12:26.24Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:12:26.24Z"
             },
             {
               "$type": "Document",
@@ -492,8 +473,7 @@
               "RelativeToolTip": "ChatAPI\\Hubs\\IChatHub.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:12:27.732Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:12:27.732Z"
             },
             {
               "$type": "Document",
@@ -505,8 +485,7 @@
               "RelativeToolTip": "ChatAPI\\Services\\TokenService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T11:56:13.795Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T11:56:13.795Z"
             },
             {
               "$type": "Document",
@@ -554,8 +533,7 @@
               "RelativeToolTip": "ChatAPI\\Controllers\\WeatherForecastController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T12:12:30.889Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-17T12:12:30.889Z"
             }
           ]
         }
