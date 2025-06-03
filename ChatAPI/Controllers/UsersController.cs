@@ -1,10 +1,9 @@
 ﻿using ChatAPI.Model;
-using ChatAPI.Services;
+using ChatAPI.Model.DTO;
+using ChatAPI.Services.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalR_Test.ConnectionManager;
-using SignalR_Test.Models;
-using SignalR_Test.Services;
 using System.Net;
 using System.Text;
 
@@ -14,97 +13,33 @@ namespace SignalR_Test.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AuthService authService;
-        private readonly UserService userService;
-        private readonly IConnectionManager connectionManager;
+        private readonly IUserRepository userRepository;
 
-        public UsersController(AuthService authService,UserService userService,IConnectionManager connectionManager)
+        public UsersController(IUserRepository userRepository)
         {
-            this.authService = authService;
-            this.userService = userService;
-            this.connectionManager = connectionManager;
-        }
-
-        [HttpPost]
-        public IActionResult Login()
-        {
-            try
-            {
-                var jdata = RequestBody();
-                var (token, refreshToken,userId,userEmail,userName) = authService.Authenticate((string)jdata.username, (string)jdata.password);
-                return Ok(new OperationResult
-                {
-                    HTTPCode = HttpStatusCode.OK,
-                    Message = "Login Success",
-                    Payload = new { token = token, refreshToken = refreshToken,userId=userId,userEmail=userEmail,userName=userName }
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new OperationResult
-                {
-                    HTTPCode = HttpStatusCode.BadRequest,
-                    Message = ex.Message
-                });
-            }
+            this.userRepository = userRepository;
         }
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Login(LoginRequestDTO loginRequestDTO)
         {
-            try
+            //throw new Exception("tesr");
+            var loginResponse = await userRepository.login(loginRequestDTO);
+            if (loginResponse != null)
             {
-                var jdata = RequestBody();
-                authService.RevokeToken((string)jdata.refreshToken);
-                connectionManager.RemoveConnection((string)jdata.connectionId); 
-                return Ok(new OperationResult
-                {
-                    HTTPCode = HttpStatusCode.OK,
-                    Message = "Logout Success"
-                });
+                return Ok(loginResponse);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new OperationResult
-                {
-                    HTTPCode = HttpStatusCode.BadRequest,
-                    Message = ex.Message
-                });
-            }
+            return BadRequest();
         }
         [HttpPost]
-        public IActionResult Register()
+        public async Task<IActionResult> Register(RegisterRequestDTO registerRequestDTO)
         {
-            try
+            var registerResponse = await userRepository.register(registerRequestDTO);
+            if (registerResponse != null)
             {
-                var jdata = RequestBody();
-                var data=userService.CreateUserAsync(jdata);
-                if(data.Result.HTTPCode==HttpStatusCode.Created)
-                {
-                    return Created("Register",data.Result);
-                }
-                else
-                {
-                    return Conflict(data.Result);
-                }
+                return Ok(registerResponse);
             }
-            catch(Exception ex)
-            {
-                return BadRequest(new OperationResult
-                {
-                    HTTPCode = HttpStatusCode.BadRequest,
-                    Message = ex.Message
-                });
-            }
+            return BadRequest();
         }
-        private dynamic RequestBody()
-        {
-            var loginContext = HttpContext.Request.Body;
-            using (var sreader = new StreamReader(loginContext, Encoding.UTF8, true))
-            {
-                var body = sreader.ReadToEndAsync();
-                var jdata = JsonConvert.DeserializeObject<dynamic>(body.Result);
-                return jdata;
-            }
-        }
+        
     }
 }

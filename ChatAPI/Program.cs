@@ -1,22 +1,20 @@
 using ChatAPI.Context;
 using ChatAPI.Mappings;
-using ChatAPI.Services;
+using ChatAPI.Middlewares;
+using ChatAPI.Model.Domain;
+using ChatAPI.Services.IRepository;
+using ChatAPI.Services.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using SignalR_Test.ConnectionManager;
-using SignalR_Test.Contexts;
 using SignalR_Test.Hubs;
-using SignalR_Test.Models;
-using SignalR_Test.Services;
-using SignalR_Test.Token;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:5002");
+//builder.WebHost.UseUrls("http://0.0.0.0:5002");
 // Add services to the container.
 
 // Configure Serilog for logging
@@ -28,11 +26,14 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 //DB connection
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
-builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("azure")));
+builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("psql")));
 
 //auto mapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+//repository addition
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //identity user
 builder.Services.AddIdentityCore<User>(options =>
@@ -43,7 +44,7 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
-}).AddRoles<IdentityRole>()
+}).AddRoles<IdentityRole<Guid>>()
 .AddTokenProvider<DataProtectorTokenProvider<User>>("ChatAPI")
 .AddEntityFrameworkStores<AppAuthDbContext>()
 .AddDefaultTokenProviders();
@@ -68,7 +69,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("V1", new OpenApiInfo { Title = "ChatAPI", Version = "V1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ChatAPI", Version = "v1" });
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -100,16 +101,15 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
 //Migrate the database
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
     var dbAuthContext = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
-    dbContext.Database.Migrate();
+    dbAuthContext.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
@@ -121,8 +121,8 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SignalR JWT API v1");
     });
 }
-
-app.UseCors("AllowAll");
+app.UseMiddleware<GlobalExceptionHandling>();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

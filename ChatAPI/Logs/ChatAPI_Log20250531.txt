@@ -1,0 +1,517 @@
+2025-05-31 14:09:58.642 +05:30 [ERR] An error occurred using the connection to database 'ChatAPI' on server 'tcp://127.0.0.1:5433'.
+2025-05-31 14:09:59.797 +05:30 [INF] Executed DbCommand (592ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE "ChatAPI";
+2025-05-31 14:09:59.979 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 14:09:59.989 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 14:09:59.994 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 14:09:59.999 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:10:00.014 +05:30 [INF] Applying migration '20250531083715_init non auth'.
+2025-05-31 14:10:00.039 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "ChatHistory" (
+    "Id" uuid NOT NULL,
+    "SenderId" uuid NOT NULL,
+    "ReceiverId" uuid NOT NULL,
+    "ChatLogs" text NOT NULL,
+    CONSTRAINT "PK_ChatHistory" PRIMARY KEY ("Id")
+);
+2025-05-31 14:10:00.045 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "User" (
+    "Id" uuid NOT NULL,
+    "UserName" text,
+    "NormalizedUserName" text,
+    "Email" text,
+    "NormalizedEmail" text,
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_User" PRIMARY KEY ("Id")
+);
+2025-05-31 14:10:00.065 +05:30 [ERR] Failed executing DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL DEFAULT (DATEADD(DAY, 1, GETUTCDATE())),
+    "Created" timestamp with time zone NOT NULL DEFAULT (GETUTCDATE()),
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshTokens_User_UserId" FOREIGN KEY ("UserId") REFERENCES "User" ("Id") ON DELETE CASCADE
+);
+2025-05-31 14:53:38.083 +05:30 [INF] Executed DbCommand (55ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:53:38.432 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 14:53:38.442 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 14:53:38.445 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 14:53:38.447 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:53:38.454 +05:30 [INF] Applying migration '20250531083715_init non auth'.
+2025-05-31 14:53:38.485 +05:30 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "ChatHistory" (
+    "Id" uuid NOT NULL,
+    "SenderId" uuid NOT NULL,
+    "ReceiverId" uuid NOT NULL,
+    "ChatLogs" text NOT NULL,
+    CONSTRAINT "PK_ChatHistory" PRIMARY KEY ("Id")
+);
+2025-05-31 14:53:38.491 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "User" (
+    "Id" uuid NOT NULL,
+    "UserName" text,
+    "NormalizedUserName" text,
+    "Email" text,
+    "NormalizedEmail" text,
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_User" PRIMARY KEY ("Id")
+);
+2025-05-31 14:53:38.509 +05:30 [ERR] Failed executing DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL DEFAULT (DATEADD(DAY, 1, GETUTCDATE())),
+    "Created" timestamp with time zone NOT NULL DEFAULT (GETUTCDATE()),
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshTokens_User_UserId" FOREIGN KEY ("UserId") REFERENCES "User" ("Id") ON DELETE CASCADE
+);
+2025-05-31 14:56:35.056 +05:30 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:56:35.137 +05:30 [INF] No migrations were found in assembly 'ChatAPI'. A migration needs to be added before the database can be updated.
+2025-05-31 14:56:35.308 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 14:56:35.318 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 14:56:35.322 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 14:56:35.324 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:56:35.331 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-05-31 14:56:35.359 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:56:35.362 +05:30 [INF] No migrations were found in assembly 'ChatAPI'. A migration needs to be added before the database can be updated.
+2025-05-31 14:56:35.400 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 14:56:35.403 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 14:56:35.404 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 14:56:35.406 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:56:35.408 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-05-31 14:56:35.772 +05:30 [INF] User profile is available. Using 'C:\Users\jawda\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-05-31 14:56:36.121 +05:30 [INF] Now listening on: https://localhost:7038
+2025-05-31 14:56:36.122 +05:30 [INF] Now listening on: http://localhost:5091
+2025-05-31 14:56:36.218 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-05-31 14:56:36.219 +05:30 [INF] Hosting environment: Development
+2025-05-31 14:56:36.220 +05:30 [INF] Content root path: D:\C#\ChatAPI\ChatAPI
+2025-05-31 14:56:38.574 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger - null null
+2025-05-31 14:56:39.362 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger - 301 0 null 856.4233ms
+2025-05-31 14:56:39.384 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/index.html - null null
+2025-05-31 14:56:39.559 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/index.html - 200 null text/html;charset=utf-8 174.7357ms
+2025-05-31 14:56:39.617 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - null null
+2025-05-31 14:56:39.617 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/swagger-ui-bundle.js - null null
+2025-05-31 14:56:39.617 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/swagger-ui.css - null null
+2025-05-31 14:56:39.617 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/swagger-ui-standalone-preset.js - null null
+2025-05-31 14:56:39.637 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 20.1529ms
+2025-05-31 14:56:39.670 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_vs/browserLink - null null
+2025-05-31 14:56:39.786 +05:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-05-31 14:56:39.788 +05:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-05-31 14:56:39.798 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 181.3723ms
+2025-05-31 14:56:39.810 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/swagger-ui.css - 200 152034 text/css 192.9138ms
+2025-05-31 14:56:39.892 +05:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-05-31 14:56:39.895 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 278.2896ms
+2025-05-31 14:56:40.090 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_vs/browserLink - 200 null text/javascript; charset=UTF-8 420.4182ms
+2025-05-31 14:56:40.411 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - null null
+2025-05-31 14:56:41.409 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/favicon-32x32.png - null null
+2025-05-31 14:56:41.444 +05:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-05-31 14:56:41.445 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - 404 0 null 1034.2023ms
+2025-05-31 14:56:41.448 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/favicon-32x32.png - 200 628 image/png 38.4478ms
+2025-05-31 14:57:27.578 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:57:27.810 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 14:57:27.823 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 14:57:27.825 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 14:57:27.827 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 14:57:27.836 +05:30 [INF] Applying migration '20250531092708_init non auth'.
+2025-05-31 14:57:27.864 +05:30 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "ChatHistory" (
+    "Id" uuid NOT NULL,
+    "SenderId" uuid NOT NULL,
+    "ReceiverId" uuid NOT NULL,
+    "ChatLogs" text NOT NULL,
+    CONSTRAINT "PK_ChatHistory" PRIMARY KEY ("Id")
+);
+2025-05-31 14:57:27.870 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "User" (
+    "Id" uuid NOT NULL,
+    "UserName" text,
+    "NormalizedUserName" text,
+    "Email" text,
+    "NormalizedEmail" text,
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_User" PRIMARY KEY ("Id")
+);
+2025-05-31 14:57:27.892 +05:30 [ERR] Failed executing DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL DEFAULT (DATEADD(DAY, 1, GETUTCDATE())),
+    "Created" timestamp with time zone NOT NULL DEFAULT (GETUTCDATE()),
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshTokens_User_UserId" FOREIGN KEY ("UserId") REFERENCES "User" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:00:21.746 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:00:22.158 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 15:00:22.170 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 15:00:22.172 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 15:00:22.174 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:00:22.182 +05:30 [INF] Applying migration '20250531093009_init non auth'.
+2025-05-31 15:00:22.208 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "ChatHistory" (
+    "Id" uuid NOT NULL,
+    "SenderId" uuid NOT NULL,
+    "ReceiverId" uuid NOT NULL,
+    "ChatLogs" text NOT NULL,
+    CONSTRAINT "PK_ChatHistory" PRIMARY KEY ("Id")
+);
+2025-05-31 15:00:22.215 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "User" (
+    "Id" uuid NOT NULL,
+    "UserName" text,
+    "NormalizedUserName" text,
+    "Email" text,
+    "NormalizedEmail" text,
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_User" PRIMARY KEY ("Id")
+);
+2025-05-31 15:00:22.235 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP + interval '1 days'),
+    "Created" timestamp with time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshTokens_User_UserId" FOREIGN KEY ("UserId") REFERENCES "User" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:00:22.238 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_RefreshTokens_UserId" ON "RefreshTokens" ("UserId");
+2025-05-31 15:00:22.240 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250531093009_init non auth', '9.0.5');
+2025-05-31 15:00:22.253 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:00:22.342 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 15:00:22.346 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 15:00:22.346 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 15:00:22.348 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:00:22.349 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-05-31 15:00:22.570 +05:30 [INF] User profile is available. Using 'C:\Users\jawda\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-05-31 15:00:22.832 +05:30 [INF] Now listening on: https://localhost:7038
+2025-05-31 15:00:22.833 +05:30 [INF] Now listening on: http://localhost:5091
+2025-05-31 15:00:22.973 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-05-31 15:00:22.974 +05:30 [INF] Hosting environment: Development
+2025-05-31 15:00:22.975 +05:30 [INF] Content root path: D:\C#\ChatAPI\ChatAPI
+2025-05-31 15:00:23.911 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/index.html - null null
+2025-05-31 15:00:24.667 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/index.html - 200 null text/html;charset=utf-8 830.9214ms
+2025-05-31 15:00:24.739 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - null null
+2025-05-31 15:00:24.864 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_vs/browserLink - null null
+2025-05-31 15:00:24.873 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 138.0003ms
+2025-05-31 15:00:25.468 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_vs/browserLink - 200 null text/javascript; charset=UTF-8 603.7554ms
+2025-05-31 15:00:25.604 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - null null
+2025-05-31 15:00:25.809 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - 404 0 null 205.195ms
+2025-05-31 15:06:10.936 +05:30 [ERR] An error occurred using the connection to database 'ChatAPI' on server 'tcp://127.0.0.1:5433'.
+2025-05-31 15:06:11.762 +05:30 [INF] Executed DbCommand (446ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE "ChatAPI";
+2025-05-31 15:06:12.106 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 15:06:12.117 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 15:06:12.121 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 15:06:12.125 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:06:12.142 +05:30 [INF] Applying migration '20250531093009_init non auth'.
+2025-05-31 15:06:12.168 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "ChatHistory" (
+    "Id" uuid NOT NULL,
+    "SenderId" uuid NOT NULL,
+    "ReceiverId" uuid NOT NULL,
+    "ChatLogs" text NOT NULL,
+    CONSTRAINT "PK_ChatHistory" PRIMARY KEY ("Id")
+);
+2025-05-31 15:06:12.173 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "User" (
+    "Id" uuid NOT NULL,
+    "UserName" text,
+    "NormalizedUserName" text,
+    "Email" text,
+    "NormalizedEmail" text,
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_User" PRIMARY KEY ("Id")
+);
+2025-05-31 15:06:12.185 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP + interval '1 days'),
+    "Created" timestamp with time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshTokens_User_UserId" FOREIGN KEY ("UserId") REFERENCES "User" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.188 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_RefreshTokens_UserId" ON "RefreshTokens" ("UserId");
+2025-05-31 15:06:12.190 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250531093009_init non auth', '9.0.5');
+2025-05-31 15:06:12.337 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:06:12.500 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-05-31 15:06:12.502 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-05-31 15:06:12.503 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-05-31 15:06:12.504 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-05-31 15:06:12.505 +05:30 [INF] Applying migration '20250531093013_init auth'.
+2025-05-31 15:06:12.559 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetRoles" (
+    "Id" uuid NOT NULL,
+    "Name" character varying(256),
+    "NormalizedName" character varying(256),
+    "ConcurrencyStamp" text,
+    CONSTRAINT "PK_AspNetRoles" PRIMARY KEY ("Id")
+);
+2025-05-31 15:06:12.571 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUsers" (
+    "Id" uuid NOT NULL,
+    "UserName" character varying(256),
+    "NormalizedUserName" character varying(256),
+    "Email" character varying(256),
+    "NormalizedEmail" character varying(256),
+    "EmailConfirmed" boolean NOT NULL,
+    "PasswordHash" text,
+    "SecurityStamp" text,
+    "ConcurrencyStamp" text,
+    "PhoneNumber" text,
+    "PhoneNumberConfirmed" boolean NOT NULL,
+    "TwoFactorEnabled" boolean NOT NULL,
+    "LockoutEnd" timestamp with time zone,
+    "LockoutEnabled" boolean NOT NULL,
+    "AccessFailedCount" integer NOT NULL,
+    CONSTRAINT "PK_AspNetUsers" PRIMARY KEY ("Id")
+);
+2025-05-31 15:06:12.580 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetRoleClaims" (
+    "Id" integer GENERATED BY DEFAULT AS IDENTITY,
+    "RoleId" uuid NOT NULL,
+    "ClaimType" text,
+    "ClaimValue" text,
+    CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_AspNetRoleClaims_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.590 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserClaims" (
+    "Id" integer GENERATED BY DEFAULT AS IDENTITY,
+    "UserId" uuid NOT NULL,
+    "ClaimType" text,
+    "ClaimValue" text,
+    CONSTRAINT "PK_AspNetUserClaims" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_AspNetUserClaims_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.598 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserLogins" (
+    "LoginProvider" text NOT NULL,
+    "ProviderKey" text NOT NULL,
+    "ProviderDisplayName" text,
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_AspNetUserLogins" PRIMARY KEY ("LoginProvider", "ProviderKey"),
+    CONSTRAINT "FK_AspNetUserLogins_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.609 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserRoles" (
+    "UserId" uuid NOT NULL,
+    "RoleId" uuid NOT NULL,
+    CONSTRAINT "PK_AspNetUserRoles" PRIMARY KEY ("UserId", "RoleId"),
+    CONSTRAINT "FK_AspNetUserRoles_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_AspNetUserRoles_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.616 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserTokens" (
+    "UserId" uuid NOT NULL,
+    "LoginProvider" text NOT NULL,
+    "Name" text NOT NULL,
+    "Value" text,
+    CONSTRAINT "PK_AspNetUserTokens" PRIMARY KEY ("UserId", "LoginProvider", "Name"),
+    CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.623 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshToken" (
+    "Id" uuid NOT NULL,
+    "Token" text NOT NULL,
+    "Expires" timestamp with time zone NOT NULL,
+    "UserId" uuid NOT NULL,
+    CONSTRAINT "PK_RefreshToken" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_RefreshToken_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-05-31 15:06:12.629 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('881c2c92-ec07-41f0-bbd3-63dde7c1734d', '881c2c92-ec07-41f0-bbd3-63dde7c1734d', 'User', 'USER');
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('9b428886-5fef-4010-a549-7048e184df74', '9b428886-5fef-4010-a549-7048e184df74', 'Admin', 'ADMIN');
+2025-05-31 15:06:12.636 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetRoleClaims_RoleId" ON "AspNetRoleClaims" ("RoleId");
+2025-05-31 15:06:12.640 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "RoleNameIndex" ON "AspNetRoles" ("NormalizedName");
+2025-05-31 15:06:12.643 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserClaims_UserId" ON "AspNetUserClaims" ("UserId");
+2025-05-31 15:06:12.645 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserLogins_UserId" ON "AspNetUserLogins" ("UserId");
+2025-05-31 15:06:12.653 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserRoles_RoleId" ON "AspNetUserRoles" ("RoleId");
+2025-05-31 15:06:12.656 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
+2025-05-31 15:06:12.658 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
+2025-05-31 15:06:12.660 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_RefreshToken_UserId" ON "RefreshToken" ("UserId");
+2025-05-31 15:06:12.662 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250531093013_init auth', '9.0.5');
+2025-05-31 15:06:12.906 +05:30 [INF] User profile is available. Using 'C:\Users\jawda\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-05-31 15:06:13.232 +05:30 [INF] Now listening on: https://localhost:7038
+2025-05-31 15:06:13.233 +05:30 [INF] Now listening on: http://localhost:5091
+2025-05-31 15:06:13.768 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-05-31 15:06:13.781 +05:30 [INF] Hosting environment: Development
+2025-05-31 15:06:13.784 +05:30 [INF] Content root path: D:\C#\ChatAPI\ChatAPI
+2025-05-31 15:06:14.245 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/index.html - null null
+2025-05-31 15:06:15.124 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/index.html - 200 null text/html;charset=utf-8 852.9172ms
+2025-05-31 15:06:15.358 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_vs/browserLink - null null
+2025-05-31 15:06:15.359 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - null null
+2025-05-31 15:06:15.399 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 40.4407ms
+2025-05-31 15:06:15.906 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_vs/browserLink - 200 null text/javascript; charset=UTF-8 547.926ms
+2025-05-31 15:06:19.039 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - null null
+2025-05-31 15:06:19.060 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - 404 0 null 21.5856ms

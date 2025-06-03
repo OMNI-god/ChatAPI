@@ -28,8 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="Services\IRepository\" />
-    <Folder Include="Services\Repository\" />
+    <Folder Include="CustomActionFilter\" />
   </ItemGroup>
 
 </Project>
