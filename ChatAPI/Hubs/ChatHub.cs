@@ -1,5 +1,4 @@
-﻿using ChatAPI.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using SignalR_Test.ConnectionManager;
@@ -10,11 +9,9 @@ namespace SignalR_Test.Hubs
     public class ChatHub : Hub<IChatClient>, IChatHub
     {
         private readonly IConnectionManager _manager;
-        private readonly ChatHistoryService chatHistoryService;
-        public ChatHub(IConnectionManager _manager, ChatHistoryService chatHistoryService)
+        public ChatHub(IConnectionManager _manager)
         {
             this._manager = _manager;
-            this.chatHistoryService = chatHistoryService;
         }
         public override async Task OnConnectedAsync()
         {
@@ -51,13 +48,11 @@ namespace SignalR_Test.Hubs
             {
                 if (!(string.IsNullOrEmpty(jdata.to.ToString()) || string.IsNullOrEmpty(jdata.from.ToString())))
                 {
-                    chatHistoryService.AddChatHistory(jdata.from.ToString(), jdata.to.ToString(), new { text = jdata.msg, time = DateTime.UtcNow.TimeOfDay, from = jdata.from }.ToString());
                 }
                 await Clients.Client(jdata.to.ToString()).ReceiveMessageAsync(jdata.msg.ToString());
             }
             else if (!(string.IsNullOrEmpty(jdata.to.ToString()) || string.IsNullOrEmpty(jdata.from.ToString())))
             {
-                chatHistoryService.AddChatHistory(jdata.from.ToString(), jdata.to.ToString(), new { text = jdata.msg, time = DateTime.UtcNow.TimeOfDay, from = jdata.from }.ToString());
             }
         }
         public async Task SendMessageToAllAsync(string jsonData)
