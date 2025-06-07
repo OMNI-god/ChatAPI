@@ -26,7 +26,7 @@ namespace ChatAPI.Context
                 .Property(rt => rt.Created)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<RefreshToken>()
-            .Property(rt => rt.Expires)
+                .Property(rt => rt.Expires)
                 .HasDefaultValueSql($"CURRENT_TIMESTAMP + interval '{configuration.GetValue<string>("jwt:RefreshTokenExpirationInDays")} days'");
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Sender)

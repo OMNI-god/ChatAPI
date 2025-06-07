@@ -29,9 +29,10 @@ namespace ChatAPI.Services.Repository
                     string token = tokenRepository.generateJWTToken(user, roles.ToList());
                     return new LoginResponseDTO
                     {
-                        userName_email = user.Email,
+                        userName = user.UserName,
+                        email = user.Email,
                         token = token,
-                        refreshToken = null
+                        refreshToken = (await tokenRepository.generateRefreshToken(user)).Token,
                     };
                 }
             }
