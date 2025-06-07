@@ -1,0 +1,49 @@
+2025-06-06 23:28:45.303 +05:30 [INF] Executed DbCommand (43ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-06-06 23:28:45.881 +05:30 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-06-06 23:28:45.891 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-06-06 23:28:45.895 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-06-06 23:28:45.898 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-06-06 23:28:45.902 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-06-06 23:28:46.176 +05:30 [INF] User profile is available. Using 'C:\Users\jawda\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-06-06 23:28:46.498 +05:30 [INF] Now listening on: https://localhost:7038
+2025-06-06 23:28:46.499 +05:30 [INF] Now listening on: http://localhost:5091
+2025-06-06 23:28:46.651 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-06 23:28:46.653 +05:30 [INF] Hosting environment: Development
+2025-06-06 23:28:46.654 +05:30 [INF] Content root path: D:\C#\ChatAPI\ChatAPI
+2025-06-06 23:28:47.741 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/index.html - null null
+2025-06-06 23:28:48.803 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/index.html - 200 null text/html;charset=utf-8 1076.806ms
+2025-06-06 23:28:49.007 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-06 23:28:49.098 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/_vs/browserLink - null null
+2025-06-06 23:28:49.787 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 779.6625ms
+2025-06-06 23:28:50.122 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/_vs/browserLink - 200 null text/javascript; charset=UTF-8 1023.3336ms
+2025-06-06 23:28:50.972 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - null null
+2025-06-06 23:28:51.025 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7038/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 53.5632ms
+2025-06-06 23:29:00.502 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7038/api/Users/Login - application/json 56
+2025-06-06 23:29:01.764 +05:30 [INF] Executing endpoint 'SignalR_Test.Controllers.UsersController.Login (ChatAPI)'
+2025-06-06 23:29:01.798 +05:30 [INF] Route matched with {action = "Login", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ChatAPI.Model.DTO.LoginRequestDTO) on controller SignalR_Test.Controllers.UsersController (ChatAPI).
+2025-06-06 23:29:02.338 +05:30 [INF] Executed DbCommand (27ms) [Parameters=[@__loginRequestDTO_userName_email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."UserName" = @__loginRequestDTO_userName_email_0 OR a."Email" = @__loginRequestDTO_userName_email_0
+LIMIT 1
+2025-06-06 23:29:02.707 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-06-06 23:29:02.805 +05:30 [INF] Executing OkObjectResult, writing value of type 'ChatAPI.Model.DTO.LoginResponseDTO'.
+2025-06-06 23:29:02.815 +05:30 [INF] Executed action SignalR_Test.Controllers.UsersController.Login (ChatAPI) in 1008.2232ms
+2025-06-06 23:29:02.817 +05:30 [INF] Executed endpoint 'SignalR_Test.Controllers.UsersController.Login (ChatAPI)'
+2025-06-06 23:29:02.822 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7038/api/Users/Login - 200 null application/json; charset=utf-8 2320.1224ms

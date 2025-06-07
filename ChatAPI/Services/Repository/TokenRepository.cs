@@ -1,4 +1,5 @@
-﻿using ChatAPI.Model.Domain;
+﻿using ChatAPI.Context;
+using ChatAPI.Model.Domain;
 using ChatAPI.Services.IRepository;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,10 +12,12 @@ namespace ChatAPI.Services.Repository
     public class TokenRepository : ITokenRepository
     {
         private readonly IConfiguration configuration;
+        private readonly AppAuthDbContext context;
 
-        public TokenRepository(IConfiguration configuration)
+        public TokenRepository(IConfiguration configuration,AppAuthDbContext context)
         {
             this.configuration = configuration;
+            this.context = context;
         }
         public string generateJWTToken(User user, List<string> roles)
         {
@@ -36,15 +39,19 @@ namespace ChatAPI.Services.Repository
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public RefreshToken generateRefreshToken()
+        public async Task<RefreshToken> generateRefreshToken(User user)
         {
-            return new RefreshToken
+            RefreshToken rToken = new RefreshToken
             {
                 Id = Guid.NewGuid(),
+                UserId = user.Id,
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128)),
+                Created = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(configuration["jwt:RefreshTokenExpirationInDays"])),
-                Created = DateTime.UtcNow
             };
+            await context.RefreshTokens.AddAsync(rToken);
+            await context.SaveChangesAsync();
+            return rToken;
         }
     }
 }

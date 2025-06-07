@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Serilog for logging
 var logger=new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.File("Logs/ChatAPI_Log.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("Logs/ChatAPI_Log_.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
