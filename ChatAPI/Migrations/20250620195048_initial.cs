@@ -168,7 +168,10 @@ namespace ChatAPI.Migrations
                     ReceiverId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    IsRead = table.Column<bool>(type: "boolean", nullable: false)
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    IsEdited = table.Column<bool>(type: "boolean", nullable: false),
+                    EditedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,7 +196,7 @@ namespace ChatAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Token = table.Column<string>(type: "text", nullable: false),
-                    Expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP + interval '1 days'"),
+                    Expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP + interval '30 days'"),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -249,6 +252,18 @@ namespace ChatAPI.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_UserName",
+                table: "AspNetUsers",
+                column: "UserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -265,9 +280,29 @@ namespace ChatAPI.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId_ReceiverId",
+                table: "Messages",
+                columns: new[] { "SenderId", "ReceiverId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SentAt",
+                table: "Messages",
+                column: "SentAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_Token",
+                table: "RefreshTokens",
+                column: "Token");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId_Token",
+                table: "RefreshTokens",
+                columns: new[] { "UserId", "Token" });
         }
 
         /// <inheritdoc />

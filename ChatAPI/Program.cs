@@ -34,6 +34,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 //repository addition
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 //identity user
 builder.Services.AddIdentityCore<User>(options =>

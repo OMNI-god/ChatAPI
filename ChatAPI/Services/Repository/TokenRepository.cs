@@ -25,7 +25,7 @@ namespace ChatAPI.Services.Repository
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
-            }.Concat(roles.AsEnumerable().Select(x => new Claim(ClaimTypes.Role, x))).ToList();
+            }.Concat(roles.AsQueryable().Select(x => new Claim(ClaimTypes.Role, x))).ToList();
             SymmetricSecurityKey sigingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"]));
             SigningCredentials credential = new SigningCredentials(sigingKey, SecurityAlgorithms.HmacSha256);
 

@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChatAPI.Model.Domain;
 
-namespace ChatAPI.Model.Domain
+namespace ChatAPI.Model.DTO
 {
-    public class Message
+    public class MessageResponseDTO
     {
-        [Key]
-        public Guid Id { get; set; }
         public Guid SenderId { get; set; }
         public User Sender { get; set; }
         public Guid ReceiverId { get; set; }

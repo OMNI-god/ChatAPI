@@ -1,5 +1,4 @@
-﻿using ChatAPI.Context;
-using ChatAPI.Model.Domain;
+﻿using ChatAPI.Model.Domain;
 using ChatAPI.Model.DTO;
 using ChatAPI.Services.IRepository;
 using Microsoft.AspNetCore.Identity;
@@ -12,14 +11,14 @@ namespace ChatAPI.Services.Repository
         private readonly UserManager<User> userManager;
         private readonly ITokenRepository tokenRepository;
 
-        public UserRepository(UserManager<User> userManager,ITokenRepository tokenRepository)
+        public UserRepository(UserManager<User> userManager, ITokenRepository tokenRepository)
         {
             this.userManager = userManager;
             this.tokenRepository = tokenRepository;
         }
         public async Task<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO)
         {
-            User user=await userManager.Users.FirstOrDefaultAsync(x=>x.UserName==loginRequestDTO.userName_email||x.Email==loginRequestDTO.userName_email);
+            User user = await userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == loginRequestDTO.userName_email || x.Email == loginRequestDTO.userName_email);
             if (user != null)
             {
                 bool isValidPassword = await userManager.CheckPasswordAsync(user, loginRequestDTO.password);
@@ -46,12 +45,23 @@ namespace ChatAPI.Services.Repository
                 UserName = registerRequestDTO.userName,
                 Email = registerRequestDTO.email
             };
-            var identityResult=await userManager.CreateAsync(user, registerRequestDTO.password);
-            if(identityResult.Succeeded)
+            var identityResult = await userManager.CreateAsync(user, registerRequestDTO.password);
+            if (identityResult.Succeeded)
             {
                 if (registerRequestDTO.roles != null && registerRequestDTO.roles.Any())
                 {
-                    identityResult = await userManager.AddToRolesAsync(user,registerRequestDTO.roles);
+                    identityResult = await userManager.AddToRolesAsync(user, registerRequestDTO.roles);
+                    if (identityResult.Succeeded)
+                    {
+                        return new RegisterResponseDTO
+                        {
+                            response = "User registered successfully.",
+                        };
+                    }
+                }
+                else
+                {
+                    identityResult = await userManager.AddToRoleAsync(user, "User");
                     if (identityResult.Succeeded)
                     {
                         return new RegisterResponseDTO
@@ -61,6 +71,7 @@ namespace ChatAPI.Services.Repository
                     }
                 }
             }
+
             return new RegisterResponseDTO
             {
                 response = string.Join(",", identityResult.Errors.Select(e => e.Description))

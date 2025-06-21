@@ -18,6 +18,7 @@ namespace ChatAPI.Context
         {
             base.OnModelCreating(modelBuilder);
             //psql
+            //user to refresh token one to many relationship
             modelBuilder.Entity<RefreshToken>()
                 .HasOne(rt => rt.User)
                 .WithMany(u => u.RefreshTokens)
@@ -28,6 +29,24 @@ namespace ChatAPI.Context
             modelBuilder.Entity<RefreshToken>()
                 .Property(rt => rt.Expires)
                 .HasDefaultValueSql($"CURRENT_TIMESTAMP + interval '{configuration.GetValue<string>("jwt:RefreshTokenExpirationInDays")} days'");
+
+            //add indexing to refresh token
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.UserId);
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.Token);
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => new { rt.UserId, rt.Token });
+
+            //add indexing to user
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
+            //user to message one to many relationship
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany(u => u.SentMessages)
@@ -41,6 +60,17 @@ namespace ChatAPI.Context
             modelBuilder.Entity<Message>()
                 .Property(m => m.SentAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            //add indexing to message
+            modelBuilder.Entity<Message>()
+                .HasIndex(message=>message.SenderId);
+            modelBuilder.Entity<Message>()
+                .HasIndex(message => message.ReceiverId);
+            modelBuilder.Entity<Message>()
+                .HasIndex(message => message.SentAt);
+            modelBuilder.Entity<Message>()
+                .HasIndex(message => new { message.SenderId, message.ReceiverId});
+
             ////mssql
             //modelBuilder.Entity<RefreshToken>()
             //    .HasOne(rt => rt.User)
