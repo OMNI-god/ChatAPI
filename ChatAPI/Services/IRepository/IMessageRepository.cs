@@ -5,6 +5,6 @@ namespace ChatAPI.Services.IRepository
     public interface IMessageRepository
     {
         Task<bool> addMessage();
-        Task<ICollection<MessageResponseDTO>> getMessagesByUserId(Guid userId);
+        Task<ICollection<ChatDTO>> getMessagesByUserId(Guid userId);
     }
 }

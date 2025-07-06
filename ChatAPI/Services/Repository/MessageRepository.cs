@@ -18,17 +18,46 @@ namespace ChatAPI.Services.Repository
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<MessageResponseDTO>> getMessagesByUserId(Guid userId)
+        public async Task<ICollection<ChatDTO>> getMessagesByUserId(Guid userId)
         {
-            ICollection<MessageResponseDTO> message=context.Messages.AsNoTracking().Where(m => m.SenderId == userId || m.ReceiverId == userId)
-                .Select(m => new MessageResponseDTO
+            var messages = await context.Messages
+                 .AsNoTracking()
+                 .Include(x => x.Sender)
+                 .Include(x => x.Receiver)
+                 .Where(x => x.SenderId == userId || x.ReceiverId == userId)
+                 .OrderBy(x => x.SentAt)
+                 .ToListAsync();
+
+            // Group messages by conversation partner
+            var grouped = messages
+                .GroupBy(m => m.SenderId == userId ? m.ReceiverId : m.SenderId);
+
+            var result = new List<ChatDTO>();
+
+            foreach (var group in grouped)
+            {
+                var firstMessage = group.First();
+                var otherUser = firstMessage.SenderId == userId ? firstMessage.Receiver : firstMessage.Sender;
+
+                var chatMessages = group.Select(m => new MessageItemDto
                 {
-                    SenderId = m.SenderId,
-                    ReceiverId = m.ReceiverId,
-                    Content = m.Content,
-                    SentAt = m.SentAt
-                }). ToList();
-            return null;
+                    Text = m.Text,
+                    Time = m.SentAt.ToLocalTime().ToString("h:mm tt"),
+                    IsSender = m.SenderId == userId
+                }).ToList();
+
+                var chatDto = new ChatDTO
+                {
+                    Id = otherUser.Id,
+                    Sender = otherUser.UserName,
+                    ProfilePic = "",
+                    Chat = chatMessages
+                };
+
+                result.Add(chatDto);
+            }
+
+            return result;
         }
     }
 }

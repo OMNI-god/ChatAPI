@@ -10,7 +10,7 @@ namespace ChatAPI.Model.Domain
         public User Sender { get; set; }
         public Guid ReceiverId { get; set; }
         public User Receiver { get; set; }
-        public string Content { get; set; }
+        public string Text { get; set; }
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
         public bool IsRead { get; set; } = false;
         public bool IsDeleted { get; set; }

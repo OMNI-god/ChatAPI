@@ -26,9 +26,29 @@ namespace SignalR_Test.Controllers
             var loginResponse = await userRepository.login(loginRequestDTO);
             if (loginResponse != null)
             {
-                return Ok(loginResponse);
+                Response.Cookies.Append("accessToken", loginResponse.token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = loginResponse.tokenExpiry
+                });
+                Response.Cookies.Append("refreshToken", loginResponse.refreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = loginResponse.refreshTokenExpiry
+                });
+
+                return Ok(new
+                {
+                    id=loginResponse.Id,
+                    userName=loginResponse.userName,
+                    email=loginResponse.email
+                });
             }
-            return BadRequest();
+            return Unauthorized("Invalid username or password");
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequestDTO registerRequestDTO)

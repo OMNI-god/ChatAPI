@@ -25,13 +25,17 @@ namespace ChatAPI.Services.Repository
                 if (isValidPassword)
                 {
                     var roles = await userManager.GetRolesAsync(user);
-                    string token = tokenRepository.generateJWTToken(user, roles.ToList());
+                    (string token,DateTime tokenExpiry) = tokenRepository.generateJWTToken(user, roles.ToList());
+                    (RefreshToken refreshToken, DateTime refreshTokenExpiry) = await tokenRepository.generateRefreshToken(user);
                     return new LoginResponseDTO
                     {
+                        Id=user.Id,
                         userName = user.UserName,
                         email = user.Email,
                         token = token,
-                        refreshToken = (await tokenRepository.generateRefreshToken(user)).Token,
+                        tokenExpiry = tokenExpiry,
+                        refreshToken = refreshToken.Token,
+                        refreshTokenExpiry=refreshTokenExpiry,
                     };
                 }
             }

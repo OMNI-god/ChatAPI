@@ -14,29 +14,27 @@ using SignalR_Test.Hubs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.WebHost.UseUrls("http://0.0.0.0:5002");
-// Add services to the container.
 
-// Configure Serilog for logging
-var logger=new LoggerConfiguration()
+// Serilog
+var logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("Logs/ChatAPI_Log_.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
-//DB connection
+// DB
 builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("psql")));
 
-//auto mapper
+// AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-//repository addition
+// Repositories
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
-//identity user
+// Identity
 builder.Services.AddIdentityCore<User>(options =>
 {
     options.Password.RequiredUniqueChars = 1;
@@ -45,15 +43,30 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
-}).AddRoles<IdentityRole<Guid>>()
-.AddTokenProvider<DataProtectorTokenProvider<User>>("ChatAPI")
+})
+.AddRoles<IdentityRole<Guid>>()
 .AddEntityFrameworkStores<AppAuthDbContext>()
 .AddDefaultTokenProviders();
 
-//authentication jwt bearer
+var validAudiences = builder.Configuration.GetSection("jwt:audiences").Get<string[]>();
+
+// JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["accessToken"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -61,12 +74,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["jwt:issuer"],
-        ValidAudience = builder.Configuration["jwt:audience"],
+        ValidAudiences = validAudiences,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
     };
 });
 
-//swagger
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -77,7 +90,7 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = JwtBearerDefaults.AuthenticationScheme,
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\""
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
     });
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -98,7 +111,19 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-//web scoket
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+// SignalR
 builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
@@ -106,28 +131,23 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-//Migrate the database
 using (var scope = app.Services.CreateScope())
 {
-    var dbAuthContext = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
-    dbAuthContext.Database.Migrate();
+    var db = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
+    db.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SignalR JWT API v1");
-    });
+    app.UseSwaggerUI();
 }
+app.UseCors("AllowSpecificOrigin");
 app.UseMiddleware<GlobalExceptionHandling>();
+app.UseMiddleware<TokenVerification>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapHub<ChatHub>("/chat");
-
 app.Run();

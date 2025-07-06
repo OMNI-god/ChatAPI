@@ -29,7 +29,7 @@ namespace ChatAPI.Middlewares
                 await context.Response.WriteAsJsonAsync(new
                 {
                     Id = id,
-                    Message = $"{ex.Message}, {ex.InnerException.Message}"
+                    Message = $"{ex?.Message}, {ex?.InnerException?.Message}"
                 });
             }
         }

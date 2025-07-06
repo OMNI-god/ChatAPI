@@ -5,7 +5,7 @@ namespace ChatAPI.Services.IRepository
 {
     public interface ITokenRepository
     {
-        string generateJWTToken(User user, List<string> roles);
-        Task<RefreshToken> generateRefreshToken(User user);
+        (string,DateTime) generateJWTToken(User user, List<string> roles);
+        Task<(RefreshToken,DateTime)> generateRefreshToken(User user);
     }
 }

@@ -2,17 +2,17 @@
 
 namespace ChatAPI.Model.DTO
 {
-    public class MessageResponseDTO
+    public class ChatDTO
     {
-        public Guid SenderId { get; set; }
-        public User Sender { get; set; }
-        public Guid ReceiverId { get; set; }
-        public User Receiver { get; set; }
-        public string Content { get; set; }
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
-        public bool IsRead { get; set; } = false;
-        public bool IsDeleted { get; set; }
-        public bool IsEdited { get; set; }
-        public DateTime? EditedAt { get; set; }
+        public Guid Id { get; set; }
+        public string Sender { get; set; }
+        public string ProfilePic { get; set; }
+        public List<MessageItemDto> Chat { get; set; }
+    }
+    public class MessageItemDto
+    {
+        public string Text { get; set; }
+        public string Time { get; set; }
+        public bool IsSender { get; set; }
     }
 }

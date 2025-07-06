@@ -14,44 +14,56 @@ namespace ChatAPI.Services.Repository
         private readonly IConfiguration configuration;
         private readonly AppAuthDbContext context;
 
-        public TokenRepository(IConfiguration configuration,AppAuthDbContext context)
+        public TokenRepository(IConfiguration configuration, AppAuthDbContext context)
         {
             this.configuration = configuration;
             this.context = context;
         }
-        public string generateJWTToken(User user, List<string> roles)
+
+        public (string, DateTime) generateJWTToken(User user, List<string> roles)
         {
-            //throw new Exception("terst");
-            List<Claim> claims = new List<Claim>
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
-            }.Concat(roles.AsQueryable().Select(x => new Claim(ClaimTypes.Role, x))).ToList();
-            SymmetricSecurityKey sigingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"]));
-            SigningCredentials credential = new SigningCredentials(sigingKey, SecurityAlgorithms.HmacSha256);
+                new Claim("ID",user.Id.ToString())
+            }
+            .Concat(roles.Select(role => new Claim(ClaimTypes.Role, role)))
+            .ToList();
 
-            JwtSecurityToken token = new JwtSecurityToken(
-                configuration["jwt:issuer"],
-                 configuration["jwt:audiance"],
-                 claims,
-                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(configuration["jwt:AccessTokenExpirationInMinutes"])),
-                 signingCredentials: credential
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"]));
+            var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            var expiry = DateTime.UtcNow.AddMinutes(Convert.ToDouble(configuration["jwt:AccessTokenExpirationInMinutes"]));
+
+            var audiences = configuration.GetSection("jwt:audiences").Get<string[]>();
+
+            var token = new JwtSecurityToken(
+                issuer: configuration["jwt:issuer"],
+                audience: null,
+                claims: claims,
+                expires: expiry,
+                signingCredentials: credentials
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+
+            token.Payload[JwtRegisteredClaimNames.Aud] = audiences;
+
+            return (new JwtSecurityTokenHandler().WriteToken(token), expiry);
         }
 
-        public async Task<RefreshToken> generateRefreshToken(User user)
+        public async Task<(RefreshToken, DateTime)> generateRefreshToken(User user)
         {
-            RefreshToken rToken = new RefreshToken
+            var expiry = DateTime.UtcNow.AddDays(Convert.ToDouble(configuration["jwt:RefreshTokenExpirationInDays"]));
+            var rToken = new RefreshToken
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128)),
                 Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(configuration["jwt:RefreshTokenExpirationInDays"])),
+                Expires = expiry
             };
             await context.RefreshTokens.AddAsync(rToken);
             await context.SaveChangesAsync();
-            return rToken;
+            return (rToken, expiry);
         }
     }
 }
