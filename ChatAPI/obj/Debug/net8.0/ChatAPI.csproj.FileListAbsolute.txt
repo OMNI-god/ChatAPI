@@ -75,6 +75,7 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.deps.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.runtimeconfig.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.pdb
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\HealthChecks.NpgSql.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\AutoMapper.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Azure.Core.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Azure.Identity.dll
@@ -105,6 +106,8 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
@@ -238,6 +241,7 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.C
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.csproj.AssemblyReference.cache
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rpswa.dswa.cache.json
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.GeneratedMSBuildEditorConfig.editorconfig
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.AssemblyInfoInputs.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.AssemblyInfo.cs
@@ -245,8 +249,12 @@ D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.csproj.CoreCompileInputs.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.MvcApplicationPartsAssemblyInfo.cs
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.MvcApplicationPartsAssemblyInfo.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.sourcelink.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\scopedcss\bundle\ChatAPI.styles.css
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\staticwebassets.development.json
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.csproj.Up2Date
@@ -255,11 +263,3 @@ D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\refint\ChatAPI.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.pdb
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.genruntimeconfig.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ref\ChatAPI.dll
-D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
-D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\HealthChecks.NpgSql.dll
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll

@@ -1,3 +1,4 @@
+using Azure;
 using ChatAPI.Context;
 using ChatAPI.Mappings;
 using ChatAPI.Middlewares;
@@ -7,13 +8,15 @@ using ChatAPI.Services.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using SignalR_Test.Hubs;
 using System.Text;
+using System.Threading.RateLimiting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +52,31 @@ builder.Services.AddControllers()
         };
     };
     options.SuppressMapClientErrors = true;
+});
+
+// Response compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
+});
+builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Fastest);
+
+// Rate limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddPolicy("ip-sliding", httpContext =>
+        RateLimitPartition.GetSlidingWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 60,
+                Window = TimeSpan.FromMinutes(1),
+                SegmentsPerWindow = 6,
+                QueueLimit = 0
+            }));
 });
 
 // DB
@@ -98,7 +126,7 @@ builder.Services.AddHealthChecks()
 .AddNpgSql(builder.Configuration.GetConnectionString("psql-local"));
 
 // JWT
-var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtSection = builder.Configuration.GetSection("JWT");
 var issuer = jwtSection["Issuer"];
 var audience = jwtSection["Audience"];
 var key = jwtSection["Key"];
@@ -188,6 +216,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -195,16 +224,18 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSerilogRequestLogging();
 app.UseCors("APICORS");
+app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseResponseCaching();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<GlobalExceptionHandling>();
 // app.UseMiddleware<TokenVerification>();
-app.MapControllers();
-app.MapHub<ChatHub>("/chat");
-app.MapHealthChecks("/health",new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+app.MapControllers().RequireRateLimiting("ip-sliding");
+app.MapHub<ChatHub>("/chat").RequireRateLimiting("ip-sliding");
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
-    ResponseWriter=HealthCheckResponseWriter.WriteResponse
+    ResponseWriter = HealthCheckResponseWriter.WriteResponse
 });
 app.Run();

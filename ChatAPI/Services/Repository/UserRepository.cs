@@ -16,33 +16,34 @@ namespace ChatAPI.Services.Repository
             this.userManager = userManager;
             this.tokenRepository = tokenRepository;
         }
-        public async Task<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO)
+        public async Task<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO, CancellationToken ct = default)
         {
-            User user = await userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == loginRequestDTO.userName_email || x.Email == loginRequestDTO.userName_email);
+            User user = await userManager.Users.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.UserName == loginRequestDTO.userName_email || x.Email == loginRequestDTO.userName_email);
             if (user != null)
             {
                 bool isValidPassword = await userManager.CheckPasswordAsync(user, loginRequestDTO.password);
                 if (isValidPassword)
                 {
                     var roles = await userManager.GetRolesAsync(user);
-                    (string token,DateTime tokenExpiry) = tokenRepository.generateJWTToken(user, roles.ToList());
+                    (string token, DateTime tokenExpiry) = tokenRepository.generateJWTToken(user, roles.ToList());
                     (RefreshToken refreshToken, DateTime refreshTokenExpiry) = await tokenRepository.generateRefreshToken(user);
                     return new LoginResponseDTO
                     {
-                        Id=user.Id,
+                        Id = user.Id,
                         userName = user.UserName,
                         email = user.Email,
                         token = token,
                         tokenExpiry = tokenExpiry,
-                        refreshToken = refreshToken.Token,
-                        refreshTokenExpiry=refreshTokenExpiry,
+                        refreshToken = refreshToken.RawToken,
+                        refreshTokenExpiry = refreshTokenExpiry,
                     };
                 }
             }
             return null;
         }
 
-        public async Task<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO)
+        public async Task<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO, CancellationToken ct = default)
         {
             var user = new User
             {

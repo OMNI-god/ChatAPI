@@ -18,7 +18,7 @@ namespace ChatAPI.Services.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<ICollection<ChatDTO>> getMessagesByUserId(Guid userId)
+        public async Task<ICollection<ChatDTO>> getMessagesByUserId(Guid userId, int page, int pageSize, CancellationToken ct = default)
         {
             var messages = await context.Messages
                  .AsNoTracking()
@@ -26,7 +26,9 @@ namespace ChatAPI.Services.Repository
                  .Include(x => x.Receiver)
                  .Where(x => x.SenderId == userId || x.ReceiverId == userId)
                  .OrderBy(x => x.SentAt)
-                 .ToListAsync();
+                 .Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToListAsync(ct);
 
             // Group messages by conversation partner
             var grouped = messages

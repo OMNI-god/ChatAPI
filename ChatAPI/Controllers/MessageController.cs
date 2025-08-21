@@ -1,4 +1,5 @@
-﻿using ChatAPI.Services.IRepository;
+﻿using System.Net;
+using ChatAPI.Services.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +20,9 @@ namespace ChatAPI.Controllers
         [ResponseCache(Duration = 2, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> GetMessages([FromQuery] Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 50)
         {
-
-            return Ok(await messageRepository.getMessagesByUserId(userId));
+            if (pageSize <= 0 || page <= 0 || pageSize > 200) return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: "Invalid paging arguments.");
+            var result = await messageRepository.getMessagesByUserId(userId, page, pageSize);
+            return Ok(result);
         }
     }
 }

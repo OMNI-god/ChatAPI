@@ -23,7 +23,7 @@ namespace ChatAPI.Services.Repository
 
         public (string, DateTime) generateJWTToken(User user, IEnumerable<string> roles)
         {
-            var jwtSection = configuration.GetSection("Jwt");
+            var jwtSection = configuration.GetSection("JWT");
             var issuer = jwtSection["Issure"];
             var audience = jwtSection["Audience"];
             var key = jwtSection["Key"];
@@ -59,7 +59,7 @@ namespace ChatAPI.Services.Repository
 
         public async Task<(RefreshToken, DateTime)> generateRefreshToken(User user, CancellationToken ct = default)
         {
-            var jwtSection = configuration.GetSection("Jwt");
+            var jwtSection = configuration.GetSection("JWT");
             var refreshTokenExpirationInDays = jwtSection["RefreshTokenExpirationInDays"];
 
             var expiry = DateTime.UtcNow.AddDays(Convert.ToDouble(refreshTokenExpirationInDays));

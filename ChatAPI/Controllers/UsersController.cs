@@ -25,7 +25,7 @@ namespace SignalR_Test.Controllers
         public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
             //throw new Exception("tesr");
-            var loginResponse = await userRepository.login(loginRequestDTO);
+            var loginResponse = await userRepository.login(loginRequestDTO,HttpContext.RequestAborted);
             if (loginResponse != null)
             {
                 Response.Cookies.Append("accessToken", loginResponse.token, new CookieOptions

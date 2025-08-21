@@ -13,7 +13,7 @@ namespace ChatAPI.Services.IRepository
         /// LoginResponseDTO containing token, refresh token and user details
         /// </returns>
         ///</summary>
-        Task<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO);
+        Task<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO, CancellationToken ct = default);
         ///<summary>
         /// User register method
         /// <description>
@@ -23,6 +23,6 @@ namespace ChatAPI.Services.IRepository
         /// RegisterResponseDTO containing token, refresh token and user details
         /// </returns>
         ///</summary>
-        Task<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO);
+        Task<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO, CancellationToken ct = default);
     }
 }
