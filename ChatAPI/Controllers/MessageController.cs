@@ -16,8 +16,10 @@ namespace ChatAPI.Controllers
             this.messageRepository = messageRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> GetMessages(Guid userId)
+        [ResponseCache(Duration = 2, Location = ResponseCacheLocation.Client, NoStore = false)]
+        public async Task<IActionResult> GetMessages([FromQuery] Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 50)
         {
+
             return Ok(await messageRepository.getMessagesByUserId(userId));
         }
     }

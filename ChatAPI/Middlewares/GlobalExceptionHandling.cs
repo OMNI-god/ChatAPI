@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatAPI.Middlewares
 {
@@ -22,15 +23,27 @@ namespace ChatAPI.Middlewares
             }
             catch (Exception ex)
             {
-                Guid id=Guid.NewGuid();
-                _logger.LogError(ex, "An unhandled exception occurred.");
-                context.Response.StatusCode=(int)HttpStatusCode.BadRequest;
-                context.Response.ContentType="application/json";
-                await context.Response.WriteAsJsonAsync(new
+                var traceID = context.TraceIdentifier;
+                _logger.LogError(ex, $"Unhandled exception. TraceID: {traceID}");
+
+                var problem = new ProblemDetails
                 {
-                    Id = id,
-                    Message = $"{ex?.Message}, {ex?.InnerException?.Message}"
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "An unexpected error occured",
+                    Detail = ex.Message,
+                    Status = (int)HttpStatusCode.InternalServerError,
+                    Instance = context.Request.Path
+                };
+                problem.Extensions["traceID"] = traceID;
+
+                context.Response.ContentType = "application/problem+json";
+                context.Response.StatusCode = problem.Status!.Value;
+
+                var json = JsonSerializer.Serialize(problem, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
+                await context.Response.WriteAsync(json);
             }
         }
 

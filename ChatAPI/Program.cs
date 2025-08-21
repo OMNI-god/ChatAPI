@@ -6,7 +6,9 @@ using ChatAPI.Services.IRepository;
 using ChatAPI.Services.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -16,23 +18,42 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Serilog
-var logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("Logs/ChatAPI_Log_.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(context.Configuration);
+});
+
+// Controller & JSON
+builder.Services.AddControllers()
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        // Model validation error response
+        var problemDetails = new HttpValidationProblemDetails(context.ModelState
+        .Where(kvp => kvp.Key.Count() > 0)
+        .ToDictionary(
+            kvp => kvp.Key,
+            kvp => kvp.Value.Errors.Select(err => err.ErrorMessage).ToArray()
+        ))
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Type = "https://httpstatuses.com/400",
+            Title = "One or more validation errors occurred.",
+            Detail = "See the errors property for more details.",
+            Instance = context.HttpContext.Request.Path
+        };
+        return new BadRequestObjectResult(problemDetails)
+        {
+            ContentTypes = { "application/problem+json" }
+        };
+    };
+    options.SuppressMapClientErrors = true;
+});
 
 // DB
-builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("psql")));
-
-// AutoMapper
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
-// Repositories
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddDbContext<AppAuthDbContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("psql-local")));
 
 // Identity
 builder.Services.AddIdentityCore<User>(options =>
@@ -48,36 +69,79 @@ builder.Services.AddIdentityCore<User>(options =>
 .AddEntityFrameworkStores<AppAuthDbContext>()
 .AddDefaultTokenProviders();
 
-var validAudiences = builder.Configuration.GetSection("jwt:audiences").Get<string[]>();
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+// Repositories
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("APICORS", policy =>
+    {
+        policy.WithOrigins(builder.Configuration
+        .GetSection("CORS:AllowedOrigins").Get<string[]>())
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+// Caching
+builder.Services.AddResponseCaching();
+
+// Health checks
+builder.Services.AddHealthChecks()
+.AddNpgSql(builder.Configuration.GetConnectionString("psql-local"));
 
 // JWT
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var issuer = jwtSection["Issuer"];
+var audience = jwtSection["Audience"];
+var key = jwtSection["Key"];
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            var token = context.Request.Cookies["accessToken"];
-            if (!string.IsNullOrEmpty(token))
-            {
-                context.Token = token;
-            }
-            return Task.CompletedTask;
-        }
-    };
-
+    options.RequireHttpsMetadata = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["jwt:issuer"],
-        ValidAudiences = validAudiences,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
+        ValidIssuer = issuer,
+        ValidAudiences = new[] { audience },
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+            {
+                context.Token = accessToken;
+                return Task.CompletedTask;
+            }
+
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                var cookieToken = context.Request.Cookies["accessToken"];
+                if (!string.IsNullOrEmpty(cookieToken))
+                    context.Token = cookieToken;
+            }
+            return Task.CompletedTask;
+        }
     };
 });
+
+builder.Services.AddAuthorization();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -111,22 +175,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigin", policy =>
-    {
-        policy.WithOrigins("https://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
-});
-
 // SignalR
 builder.Services.AddSignalR();
 
-builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
@@ -142,12 +193,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowSpecificOrigin");
-app.UseMiddleware<GlobalExceptionHandling>();
-app.UseMiddleware<TokenVerification>();
+app.UseSerilogRequestLogging();
+app.UseCors("APICORS");
 app.UseHttpsRedirection();
+app.UseResponseCaching();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<GlobalExceptionHandling>();
+// app.UseMiddleware<TokenVerification>();
 app.MapControllers();
 app.MapHub<ChatHub>("/chat");
+app.MapHealthChecks("/health",new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter=HealthCheckResponseWriter.WriteResponse
+});
 app.Run();
