@@ -21,7 +21,7 @@ namespace ChatAPI.Controllers
         public async Task<IActionResult> GetMessages([FromQuery] Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 50)
         {
             if (pageSize <= 0 || page <= 0 || pageSize > 200) return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: "Invalid paging arguments.");
-            var result = await messageRepository.getMessagesByUserId(userId, page, pageSize);
+            var result = await messageRepository.getMessagesByUserId(userId, page, pageSize, HttpContext.RequestAborted);
             return Ok(result);
         }
     }

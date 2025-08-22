@@ -128,7 +128,7 @@ builder.Services.AddHealthChecks()
 // JWT
 var jwtSection = builder.Configuration.GetSection("JWT");
 var issuer = jwtSection["Issuer"];
-var audience = jwtSection["Audience"];
+var audience = jwtSection.GetSection("Audience").Get<string[]>();
 var key = jwtSection["Key"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -142,7 +142,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = issuer,
-        ValidAudiences = new[] { audience },
+        ValidAudiences = audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
     };
 

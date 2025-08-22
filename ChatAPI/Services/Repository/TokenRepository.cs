@@ -24,8 +24,8 @@ namespace ChatAPI.Services.Repository
         public (string, DateTime) generateJWTToken(User user, IEnumerable<string> roles)
         {
             var jwtSection = configuration.GetSection("JWT");
-            var issuer = jwtSection["Issure"];
-            var audience = jwtSection["Audience"];
+            var issuer = jwtSection["Issuer"];
+            var audience = jwtSection.GetSection("Audience").Get<string[]>();
             var key = jwtSection["Key"];
             var accessTokenExpirationinMinutes = jwtSection["AccessTokenExpirationinMinutes"];
 
@@ -33,8 +33,14 @@ namespace ChatAPI.Services.Repository
             {
                 new(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
                 new(JwtRegisteredClaimNames.UniqueName,user.UserName),
-                new(JwtRegisteredClaimNames.Email,user.Email)
+                new(JwtRegisteredClaimNames.Email,user.Email),
+                new(JwtRegisteredClaimNames.Iss,issuer)
+
             };
+            foreach (string aud in audience)
+            {
+                claims.Add(new(JwtRegisteredClaimNames.Aud, aud));
+            }
             // .Concat(roles.Select(role => new Claim(ClaimTypes.Role, role)))
             // .ToList();
 
@@ -47,7 +53,7 @@ namespace ChatAPI.Services.Repository
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
-                audience: audience,
+                audience: string.Join(",", audience),
                 claims: claims,
                 expires: expiry,
                 signingCredentials: credentials,
