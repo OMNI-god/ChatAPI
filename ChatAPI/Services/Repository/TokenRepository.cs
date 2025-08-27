@@ -26,7 +26,7 @@ namespace ChatAPI.Services.Repository
             var jwtSection = configuration.GetSection("JWT");
             var issuer = jwtSection["Issuer"];
             var audience = jwtSection.GetSection("Audience").Get<string[]>();
-            var key = jwtSection["Key"];
+            var key = configuration["Jwt:Key"];
             var accessTokenExpirationinMinutes = jwtSection["AccessTokenExpirationinMinutes"];
 
             var claims = new List<Claim>

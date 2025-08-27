@@ -5,6 +5,7 @@ using ChatAPI.Middlewares;
 using ChatAPI.Model.Domain;
 using ChatAPI.Services.IRepository;
 using ChatAPI.Services.Repository;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,8 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load();
+builder.Configuration.AddEnvironmentVariables();
 // Serilog
 builder.Host.UseSerilog((context, loggerConfig) =>
 {
@@ -81,7 +84,7 @@ builder.Services.AddRateLimiter(options =>
 
 // DB
 builder.Services.AddDbContext<AppAuthDbContext>(o =>
-    o.UseNpgsql(builder.Configuration.GetConnectionString("psql-local")));
+    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Identity
 builder.Services.AddIdentityCore<User>(options =>
@@ -123,13 +126,13 @@ builder.Services.AddResponseCaching();
 
 // Health checks
 builder.Services.AddHealthChecks()
-.AddNpgSql(builder.Configuration.GetConnectionString("psql-local"));
+.AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // JWT
 var jwtSection = builder.Configuration.GetSection("JWT");
 var issuer = jwtSection["Issuer"];
 var audience = jwtSection.GetSection("Audience").Get<string[]>();
-var key = jwtSection["Key"];
+var key = builder.Configuration["Jwt:Key"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
@@ -222,6 +225,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<GlobalExceptionHandling>();
 app.UseSerilogRequestLogging();
 app.UseCors("APICORS");
 app.UseResponseCompression();
@@ -230,7 +234,6 @@ app.UseResponseCaching();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<GlobalExceptionHandling>();
 // app.UseMiddleware<TokenVerification>();
 app.MapControllers().RequireRateLimiting("ip-sliding");
 app.MapHub<ChatHub>("/chat").RequireRateLimiting("ip-sliding");
