@@ -230,8 +230,16 @@ app.UseSerilogRequestLogging();
 app.UseCors("APICORS");
 app.UseResponseCompression();
 app.UseHttpsRedirection();
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UseHsts();
+// }
 app.UseResponseCaching();
 app.UseRateLimiter();
+
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseSerilogRequestLogging();
+
 app.UseAuthentication();
 app.UseAuthorization();
 // app.UseMiddleware<TokenVerification>();
@@ -241,4 +249,16 @@ app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks
 {
     ResponseWriter = HealthCheckResponseWriter.WriteResponse
 });
-app.Run();
+try
+{
+    Log.Information("Starting application");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application start-up failed");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

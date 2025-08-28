@@ -67,7 +67,6 @@ C:\Users\rupayan.mondal\OneDrive - Accenture\Desktop\ChatAPI\ChatAPI\obj\Debug\n
 C:\Users\rupayan.mondal\OneDrive - Accenture\Desktop\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.pdb
 C:\Users\rupayan.mondal\OneDrive - Accenture\Desktop\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.genruntimeconfig.cache
 C:\Users\rupayan.mondal\OneDrive - Accenture\Desktop\ChatAPI\ChatAPI\obj\Debug\net8.0\ref\ChatAPI.dll
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\appsettings.Development.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\appsettings.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.staticwebassets.endpoints.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\ChatAPI.exe
@@ -79,11 +78,14 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\HealthChecks.NpgSql.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\AutoMapper.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Azure.Core.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Azure.Identity.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\DotNetEnv.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Humanizer.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Build.Locator.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
@@ -102,6 +104,8 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
@@ -129,10 +133,18 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Mono.TextTemplating.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Npgsql.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.AspNetCore.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Enrichers.CorrelationId.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Enrichers.Environment.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Enrichers.Process.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Enrichers.Thread.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Exceptions.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Expressions.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Extensions.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
@@ -140,6 +152,7 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Sinks.Console.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Serilog.Sinks.File.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Sprache.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -263,5 +276,3 @@ D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\refint\ChatAPI.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.pdb
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.genruntimeconfig.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ref\ChatAPI.dll
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\DotNetEnv.dll
-D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Sprache.dll
