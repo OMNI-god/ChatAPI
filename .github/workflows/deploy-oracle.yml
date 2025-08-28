@@ -78,6 +78,8 @@ jobs:
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/ChatAPI
+            dotnet tool install --global dotnet-ef --version 8.*
+            export PATH="$PATH:$HOME/.dotnet/tools"
             export ConnectionStrings__DefaultConnection="${{ secrets.DB_Oracle_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
             dotnet ef database update --no-build
