@@ -1,4 +1,4 @@
-name: Deploy to Oracle VM
+name: Build & Deploy ChatAPI
 
 on:
   push:
@@ -12,93 +12,68 @@ jobs:
 
     steps:
       # 1️⃣ Checkout repository
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
       # 2️⃣ Setup .NET SDK
-      - name: Set up .NET SDK
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
-      # 3️⃣ Publish the project
-      - name: Publish .NET Project
+      # 3️⃣ Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4️⃣ Build project
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # 5️⃣ Publish project
+      - name: Publish
         run: dotnet publish -c Release -o ./publish
 
-      # 4️⃣ Ensure target directory exists on VM
-      - name: Ensure target directory exists
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          script: |
-            mkdir -p /home/ubuntu/ChatAPI
-
-      # 5️⃣ Stop service before deploying
-      - name: Stop service
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          script: |
-            sudo systemctl stop ChatAPI || true
-
-      # 6️⃣ Clean old files
-      - name: Clean old files
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          script: |
-            sudo rm -rf /home/ubuntu/ChatAPI/*
-
-      # 7️⃣ Upload published build to VM
-      - name: Upload new build
+      # 6️⃣ Copy publish files to VM
+      - name: Copy published build to VM
         uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_KEY }}
           source: "./publish/*"
-          target: "/home/ubuntu/ChatAPI"
+          target: "~/ChatAPI"
           strip_components: 1
 
-      # 8️⃣ Set environment variables on VM
-      - name: Update environment variables
-        uses: appleboy/ssh-action@v1.0.0
+      # 7️⃣ Copy source code (for migrations) to VM
+      - name: Copy project source to VM
+        uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          script: |
-            echo "ConnectionStrings__DefaultConnection=${{ secrets.DB_Oracle_CONNECTION }}" | sudo tee -a /etc/environment
-            echo "Jwt__Key=${{ secrets.JWT_KEY }}" | sudo tee -a /etc/environment
-            source /etc/environment
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_KEY }}
+          source: "./"
+          target: "~/ChatAPI_Source"
+          exclude: |
+            **/bin/**
+            **/obj/**
+            .git/**
 
-      # 9️⃣ Run EF Core migrations
-      - name: Run EF Core migrations
+      # 8️⃣ Run migrations & restart service
+      - name: Run migrations & restart ChatAPI
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_KEY }}
           script: |
-            cd /home/ubuntu/ChatAPI
-            export ConnectionStrings__DefaultConnection="${{ secrets.DB_Oracle_CONNECTION }}"
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            export ConnectionStrings__Default="${{ secrets.DB_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
-            dotnet ef database update --no-build --project /home/ubuntu/ChatAPI/ChatAPI.csproj
 
-      # 🔟 Restart the service
-      - name: Restart service
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          script: |
-            sudo systemctl daemon-reload
-            sudo systemctl start ChatAPI
-            sudo systemctl status ChatAPI --no-pager
+            echo "Running EF migrations..."
+            cd ~/ChatAPI_Source
+            dotnet ef database update --no-build --project ~/ChatAPI_Source/ChatAPI.csproj
+
+            echo "Restarting ChatAPI service..."
+            sudo systemctl restart chatapi
+            sudo systemctl status chatapi --no-pager
