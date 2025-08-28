@@ -58,7 +58,7 @@ jobs:
             cd ~/ChatAPI/ChatAPI
             export ConnectionStrings__DefaultConnection="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
-            dotnet ef database update --project ./ChatAPI.csproj
+            dotnet ef database update --project ./ChatAPI.csproj --connection "${{secrets.DB_ORACLE_CONNECTION}}"
 
       # 5️⃣ Build & publish project
       - name: Build & publish
