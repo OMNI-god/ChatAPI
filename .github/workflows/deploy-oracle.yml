@@ -37,9 +37,9 @@ jobs:
       - name: Copy published build to VM
         uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_KEY }}
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           source: "./publish/*"
           target: "~/ChatAPI"
           strip_components: 1
@@ -48,9 +48,9 @@ jobs:
       - name: Copy project source to VM
         uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_KEY }}
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           source: "./"
           target: "~/ChatAPI_Source"
           exclude: |
@@ -62,12 +62,12 @@ jobs:
       - name: Run migrations & restart ChatAPI
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_KEY }}
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
             export PATH="$PATH:$HOME/.dotnet/tools"
-            export ConnectionStrings__Default="${{ secrets.DB_Oracle_CONNECTION }}"
+            export ConnectionStrings__Default="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
 
             echo "Running EF migrations..."
