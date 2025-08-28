@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,7 +166,7 @@ namespace ChatAPI.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SenderId = table.Column<Guid>(type: "uuid", nullable: false),
                     ReceiverId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
                     SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsRead = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -195,7 +195,7 @@ namespace ChatAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Token = table.Column<string>(type: "text", nullable: false),
+                    TokenHash = table.Column<string>(type: "text", nullable: false),
                     Expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP + interval '30 days'"),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
@@ -290,9 +290,9 @@ namespace ChatAPI.Migrations
                 column: "SentAt");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_Token",
+                name: "IX_RefreshTokens_TokenHash",
                 table: "RefreshTokens",
-                column: "Token");
+                column: "TokenHash");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
@@ -300,9 +300,9 @@ namespace ChatAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_UserId_Token",
+                name: "IX_RefreshTokens_UserId_TokenHash",
                 table: "RefreshTokens",
-                columns: new[] { "UserId", "Token" });
+                columns: new[] { "UserId", "TokenHash" });
         }
 
         /// <inheritdoc />

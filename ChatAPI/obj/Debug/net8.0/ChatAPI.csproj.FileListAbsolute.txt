@@ -276,3 +276,4 @@ D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\refint\ChatAPI.dll
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.pdb
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ChatAPI.genruntimeconfig.cache
 D:\C#\ChatAPI\ChatAPI\obj\Debug\net8.0\ref\ChatAPI.dll
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20250828.json
