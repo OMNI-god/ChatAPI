@@ -80,9 +80,8 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            if [ ! -f /etc/systemd/system/ChatAPI.service ]; then
-              echo "Creating systemd service..."
-              sudo bash -c 'cat > /etc/systemd/system/ChatAPI.service <<EOF
+            sudo systemctl restart ChatAPI.service
+            sudo systemctl status ChatAPI.service --no-pager
 
       # 6️⃣ Delete Temp Files
       - name: Delete temp files
