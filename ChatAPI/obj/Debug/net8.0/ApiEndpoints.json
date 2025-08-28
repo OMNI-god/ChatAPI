@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "ChatAPI.Controllers.MessageController",
+    "Method": "GetMessages",
+    "RelativePath": "api/Message",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SignalR_Test.Controllers.UsersController",
     "Method": "Login",
     "RelativePath": "api/Users/Login",

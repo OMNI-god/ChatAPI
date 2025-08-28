@@ -5,6 +5,28 @@
     "version": "v1"
   },
   "paths": {
+    "/api/Message": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users/Login": {
       "post": {
         "tags": [
@@ -186,7 +208,7 @@
     "securitySchemes": {
       "Bearer": {
         "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
         "name": "Authorization",
         "in": "header"
       }

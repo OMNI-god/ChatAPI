@@ -28,9 +28,14 @@ namespace ChatAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
@@ -46,11 +51,19 @@ namespace ChatAPI.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
+
+                    b.HasIndex("SentAt");
+
+                    b.HasIndex("SenderId", "ReceiverId");
 
                     b.ToTable("Messages");
                 });
@@ -69,9 +82,9 @@ namespace ChatAPI.Migrations
                     b.Property<DateTime>("Expires")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP + interval '1 days'");
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP + interval '30 days'");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("TokenHash")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -80,7 +93,11 @@ namespace ChatAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TokenHash");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "TokenHash");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -140,12 +157,18 @@ namespace ChatAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });

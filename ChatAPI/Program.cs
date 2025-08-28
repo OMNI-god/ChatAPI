@@ -1,41 +1,92 @@
+using Azure;
 using ChatAPI.Context;
 using ChatAPI.Mappings;
 using ChatAPI.Middlewares;
 using ChatAPI.Model.Domain;
 using ChatAPI.Services.IRepository;
 using ChatAPI.Services.Repository;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using SignalR_Test.Hubs;
 using System.Text;
+using System.Threading.RateLimiting;
+
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.WebHost.UseUrls("http://0.0.0.0:5002");
-// Add services to the container.
 
-// Configure Serilog for logging
-var logger=new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("Logs/ChatAPI_Log_.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
+Env.Load();
+builder.Configuration.AddEnvironmentVariables();
+// Serilog
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(context.Configuration);
+});
 
-//DB connection
-builder.Services.AddDbContext<AppAuthDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("psql")));
+// Controller & JSON
+builder.Services.AddControllers()
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        // Model validation error response
+        var problemDetails = new HttpValidationProblemDetails(context.ModelState
+        .Where(kvp => kvp.Key.Count() > 0)
+        .ToDictionary(
+            kvp => kvp.Key,
+            kvp => kvp.Value.Errors.Select(err => err.ErrorMessage).ToArray()
+        ))
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Type = "https://httpstatuses.com/400",
+            Title = "One or more validation errors occurred.",
+            Detail = "See the errors property for more details.",
+            Instance = context.HttpContext.Request.Path
+        };
+        return new BadRequestObjectResult(problemDetails)
+        {
+            ContentTypes = { "application/problem+json" }
+        };
+    };
+    options.SuppressMapClientErrors = true;
+});
 
-//auto mapper
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+// Response compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
+});
+builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Fastest);
 
-//repository addition
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// Rate limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-//identity user
+    options.AddPolicy("ip-sliding", httpContext =>
+        RateLimitPartition.GetSlidingWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 60,
+                Window = TimeSpan.FromMinutes(1),
+                SegmentsPerWindow = 6,
+                QueueLimit = 0
+            }));
+});
+
+// DB
+builder.Services.AddDbContext<AppAuthDbContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Identity
 builder.Services.AddIdentityCore<User>(options =>
 {
     options.Password.RequiredUniqueChars = 1;
@@ -44,28 +95,86 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
-}).AddRoles<IdentityRole<Guid>>()
-.AddTokenProvider<DataProtectorTokenProvider<User>>("ChatAPI")
+})
+.AddRoles<IdentityRole<Guid>>()
 .AddEntityFrameworkStores<AppAuthDbContext>()
 .AddDefaultTokenProviders();
 
-//authentication jwt bearer
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+// Repositories
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("APICORS", policy =>
+    {
+        policy.WithOrigins(builder.Configuration
+        .GetSection("CORS:AllowedOrigins").Get<string[]>())
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+// Caching
+builder.Services.AddResponseCaching();
+
+// Health checks
+builder.Services.AddHealthChecks()
+.AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+// JWT
+var jwtSection = builder.Configuration.GetSection("JWT");
+var issuer = jwtSection["Issuer"];
+var audience = jwtSection.GetSection("Audience").Get<string[]>();
+var key = builder.Configuration["Jwt:Key"];
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
+    options.RequireHttpsMetadata = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["jwt:issuer"],
-        ValidAudience = builder.Configuration["jwt:audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]))
+        ValidIssuer = issuer,
+        ValidAudiences = audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+            {
+                context.Token = accessToken;
+                return Task.CompletedTask;
+            }
+
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                var cookieToken = context.Request.Cookies["accessToken"];
+                if (!string.IsNullOrEmpty(cookieToken))
+                    context.Token = cookieToken;
+            }
+            return Task.CompletedTask;
+        }
     };
 });
 
-//swagger
+builder.Services.AddAuthorization();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -76,7 +185,7 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = JwtBearerDefaults.AuthenticationScheme,
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\""
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
     });
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -97,36 +206,59 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-//web scoket
+// SignalR
 builder.Services.AddSignalR();
 
-builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-//Migrate the database
 using (var scope = app.Services.CreateScope())
 {
-    var dbAuthContext = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
-    dbAuthContext.Database.Migrate();
+    var db = scope.ServiceProvider.GetRequiredService<AppAuthDbContext>();
+    db.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SignalR JWT API v1");
-    });
+    app.UseSwaggerUI();
 }
 app.UseMiddleware<GlobalExceptionHandling>();
+app.UseSerilogRequestLogging();
+app.UseCors("APICORS");
+app.UseResponseCompression();
 app.UseHttpsRedirection();
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UseHsts();
+// }
+app.UseResponseCaching();
+app.UseRateLimiter();
+
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseSerilogRequestLogging();
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
-app.MapHub<ChatHub>("/chat");
-
-app.Run();
+// app.UseMiddleware<TokenVerification>();
+app.MapControllers().RequireRateLimiting("ip-sliding");
+app.MapHub<ChatHub>("/chat").RequireRateLimiting("ip-sliding");
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+});
+try
+{
+    Log.Information("Starting application");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application start-up failed");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
