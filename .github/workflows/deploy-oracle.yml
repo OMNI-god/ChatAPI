@@ -1,4 +1,4 @@
-name: Build & Deploy ChatAPI
+name: Deploy to Oracle VM
 
 on:
   push:
@@ -11,73 +11,75 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout code
+      # 1️⃣ Checkout source (optional for local use)
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup .NET SDK
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-
-      # 3️⃣ Restore dependencies
-      - name: Restore dependencies
-        run: dotnet restore
-
-      # 4️⃣ Build project
-      - name: Build project
-        run: dotnet build --configuration Release --no-restore
-
-      # 5️⃣ Publish project
-      - name: Publish project
-        run: dotnet publish -c Release -o ./publish
-
-      # 6️⃣ Copy published files to VM
-      - name: Copy published build to VM
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          source: "./publish/*"
-          target: "~/ChatAPI"
-          strip_components: 1
-
-      # 7️⃣ Copy source code (for migrations) to VM
-      - name: Copy project source to VM
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.ORACLE_VM_IP }}
-          username: ${{ secrets.ORACLE_VM_USER }}
-          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          source: "./"
-          target: "~/ChatAPI_Source"
-          exclude: |
-            **/bin/**
-            **/obj/**
-            .git/**
-
-      # 8️⃣ Run EF migrations and restart systemd service
-      - name: Run migrations & restart ChatAPI
+      # 2️⃣ Clone or pull repository on VM
+      - name: Clone or pull repository
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.ORACLE_VM_IP }}
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            # Add dotnet tools to PATH
-            export PATH="$PATH:$HOME/.dotnet/tools"
+            PROJECT_DIR=~/ChatAPI
+            if [ ! -d "$PROJECT_DIR" ]; then
+              echo "Cloning repository..."
+              git clone https://github.com/OMNI-god/ChatAPI.git $PROJECT_DIR
+            else
+              echo "Pulling latest changes..."
+              cd $PROJECT_DIR
+              git reset --hard
+              git pull origin main
+            fi
 
-            # Set environment variables for migrations
+      # 3️⃣ Install EF Core CLI locally if missing
+      - name: Setup EF Core CLI
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/ChatAPI
+            dotnet new tool-manifest || true
+            dotnet tool install dotnet-ef --version 9.* || true
+            dotnet tool restore
+
+      # 4️⃣ Run EF Core migrations
+      - name: Run EF migrations
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/ChatAPI
             export ConnectionStrings__Default="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
+            dotnet ef database update --project ./ChatAPI.csproj
 
-            echo "Running EF migrations..."
-            cd ~/ChatAPI_Source/ChatAPI
-            dotnet ef database update --no-build --project ./ChatAPI.csproj
+      # 5️⃣ Build & publish project
+      - name: Build & publish
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/ChatAPI
+            dotnet build -c Release
+            dotnet publish -c Release -o ~/ChatAPI_Release
 
-            echo "Restarting ChatAPI systemd service..."
-            sudo systemctl daemon-reload
-            sudo systemctl restart chatapi
-            sudo systemctl status chatapi --no-pager
+      # 6️⃣ Deploy & start systemd service
+      - name: Deploy & start service
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            if [ ! -f /etc/systemd/system/chatapi.service ]; then
+              echo "Creating systemd service..."
+              sudo bash -c 'cat > /etc/systemd/system/chatapi.service <<EOF
