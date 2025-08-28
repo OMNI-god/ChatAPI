@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatAPI.Migrations
 {
     [DbContext(typeof(AppAuthDbContext))]
-    [Migration("20250706093803_update1")]
-    partial class update1
+    [Migration("20250828215811_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,7 +87,7 @@ namespace ChatAPI.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP + interval '30 days'");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("TokenHash")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -96,11 +96,11 @@ namespace ChatAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Token");
+                    b.HasIndex("TokenHash");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("UserId", "Token");
+                    b.HasIndex("UserId", "TokenHash");
 
                     b.ToTable("RefreshTokens");
                 });
