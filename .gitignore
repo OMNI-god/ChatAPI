@@ -1,2 +1,4 @@
-Logs/
-.vs/ 
+.vs/
+Logs/ 
+bin/
+obj/
