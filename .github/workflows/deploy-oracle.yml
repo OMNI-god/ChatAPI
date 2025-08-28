@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            cd ~/ChatAPI
+            cd ~/ChatAPI/ChatAPI
             export ConnectionStrings__Default="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
             dotnet ef database update --project ./ChatAPI.csproj
