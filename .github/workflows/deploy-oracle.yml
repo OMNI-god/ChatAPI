@@ -26,14 +26,14 @@ jobs:
         run: dotnet restore
 
       # 4️⃣ Build project
-      - name: Build
+      - name: Build project
         run: dotnet build --configuration Release --no-restore
 
       # 5️⃣ Publish project
-      - name: Publish
+      - name: Publish project
         run: dotnet publish -c Release -o ./publish
 
-      # 6️⃣ Copy publish files to VM
+      # 6️⃣ Copy published files to VM
       - name: Copy published build to VM
         uses: appleboy/scp-action@v0.1.3
         with:
@@ -58,7 +58,7 @@ jobs:
             **/obj/**
             .git/**
 
-      # 8️⃣ Run migrations & restart service
+      # 8️⃣ Run EF migrations and restart systemd service
       - name: Run migrations & restart ChatAPI
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -66,14 +66,18 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
+            # Add dotnet tools to PATH
             export PATH="$PATH:$HOME/.dotnet/tools"
+
+            # Set environment variables for migrations
             export ConnectionStrings__Default="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
 
             echo "Running EF migrations..."
-            cd ~/ChatAPI_Source
-            dotnet ef database update --no-build --project ~/ChatAPI_Source/ChatAPI.csproj
+            cd ~/ChatAPI_Source/ChatAPI
+            dotnet ef database update --no-build --project ./ChatAPI.csproj
 
-            echo "Restarting ChatAPI service..."
+            echo "Restarting ChatAPI systemd service..."
+            sudo systemctl daemon-reload
             sudo systemctl restart chatapi
             sudo systemctl status chatapi --no-pager
