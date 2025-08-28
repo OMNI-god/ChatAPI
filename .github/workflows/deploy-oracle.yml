@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            PROJECT_DIR=~/ChatAPI
+            PROJECT_DIR=~/ChatAPI_Temp
             if [ ! -d "$PROJECT_DIR" ]; then
               echo "Cloning repository..."
               git clone https://github.com/OMNI-god/ChatAPI.git $PROJECT_DIR
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            cd ~/ChatAPI
+            cd ~/ChatAPI_Temp
             dotnet new tool-manifest || true
             dotnet tool install dotnet-ef --version 9.* || true
             dotnet tool restore
@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            cd ~/ChatAPI/ChatAPI
+            cd ~/ChatAPI_Temp/ChatAPI
             export ConnectionStrings__DefaultConnection="${{ secrets.DB_ORACLE_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
             dotnet ef database update --project ./ChatAPI.csproj --connection "${{secrets.DB_ORACLE_CONNECTION}}"
@@ -68,9 +68,9 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            cd ~/ChatAPI
+            cd ~/ChatAPI_Temp
             dotnet build -c Release
-            dotnet publish -c Release -o ~/ChatAPI_Release
+            dotnet publish -c Release -o ~/ChatAPI
 
       # 6️⃣ Deploy & start systemd service
       - name: Deploy & start service
@@ -80,6 +80,17 @@ jobs:
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            if [ ! -f /etc/systemd/system/chatapi.service ]; then
+            if [ ! -f /etc/systemd/system/ChatAPI.service ]; then
               echo "Creating systemd service..."
-              sudo bash -c 'cat > /etc/systemd/system/chatapi.service <<EOF
+              sudo bash -c 'cat > /etc/systemd/system/ChatAPI.service <<EOF
+
+      # 6️⃣ Delete Temp Files
+      - name: Delete temp files
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.ORACLE_VM_IP }}
+          username: ${{ secrets.ORACLE_VM_USER }}
+          key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/
+            rm -r ChatAPI_Temp
