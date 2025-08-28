@@ -67,7 +67,7 @@ jobs:
           key: ${{ secrets.VM_KEY }}
           script: |
             export PATH="$PATH:$HOME/.dotnet/tools"
-            export ConnectionStrings__Default="${{ secrets.DB_CONNECTION }}"
+            export ConnectionStrings__Default="${{ secrets.DB_Oracle_CONNECTION }}"
             export Jwt__Key="${{ secrets.JWT_KEY }}"
 
             echo "Running EF migrations..."
