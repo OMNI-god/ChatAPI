@@ -114,6 +114,7 @@ namespace ChatAPI.Services.Repository
         public async Task<RefreshToken> getRefreshTokenData(User user)
         {
             string refreshToken = httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken)) return null;
             var refreshTokenDBData = await context.RefreshTokens.FirstOrDefaultAsync(x => x.Refresh_Token_Hash == Sha256(refreshToken) || x.UserId == user.Id);
             return refreshTokenDBData;
         }
