@@ -109,7 +109,7 @@ namespace ChatAPI.Services.Repository
         {
             return new LoginResponseDTO
             {
-                Id = user.Id,
+                UserId = user.Id,
                 userName = user.UserName,
                 email = user.Email,
                 token = token,
