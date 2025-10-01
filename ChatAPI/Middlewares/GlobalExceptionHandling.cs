@@ -24,7 +24,11 @@ namespace ChatAPI.Middlewares
             catch (Exception ex)
             {
                 var traceID = context.TraceIdentifier;
-                _logger.LogError(ex, $"Unhandled exception. TraceID: {traceID}");
+                _logger.LogError(ex, "Unhandled exception occurred. TraceID: {TraceId}, Path: {Path}, Method: {Method}, Query: {QueryString}",
+                    traceID,
+                    context.Request.Path,
+                    context.Request.Method,
+                    context.Request.QueryString.Value);
 
                 var problem = new ProblemDetails
                 {

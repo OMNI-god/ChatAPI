@@ -12,48 +12,43 @@ namespace ChatAPI.Services.Repository
 {
     public class TokenRepository : ITokenRepository
     {
-        private readonly IConfiguration configuration;
+        private readonly JwtOptions jwtOptions;
         private readonly AppAuthDbContext context;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ILogger<TokenRepository> logger;
 
-        public TokenRepository(IConfiguration configuration, AppAuthDbContext context)
+        public TokenRepository(JwtOptions jwtOptions, AppAuthDbContext context, IHttpContextAccessor httpContextAccessor,
+        ILogger<TokenRepository> logger)
         {
-            this.configuration = configuration;
+            this.jwtOptions = jwtOptions;
             this.context = context;
+            this.httpContextAccessor = httpContextAccessor;
+            this.logger = logger;
         }
 
         public (string, DateTime) generateJWTToken(User user, IEnumerable<string> roles)
         {
-            var jwtSection = configuration.GetSection("JWT");
-            var issuer = jwtSection["Issuer"];
-            var audience = jwtSection.GetSection("Audience").Get<string[]>();
-            var key = configuration["Jwt:Key"];
-            var accessTokenExpirationinMinutes = jwtSection["AccessTokenExpirationinMinutes"];
-
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
-                new(JwtRegisteredClaimNames.UniqueName,user.UserName),
-                new(JwtRegisteredClaimNames.Email,user.Email),
-                new(JwtRegisteredClaimNames.Iss,issuer)
-
+                new(JwtRegisteredClaimNames.UniqueName,user.UserName??string.Empty),
+                new(JwtRegisteredClaimNames.Email,user.Email??string.Empty),
+                new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Iss,jwtOptions.Issuer),
+                new(ClaimTypes.NameIdentifier,user.Id.ToString())
             };
-            foreach (string aud in audience)
-            {
-                claims.Add(new(JwtRegisteredClaimNames.Aud, aud));
-            }
-            // .Concat(roles.Select(role => new Claim(ClaimTypes.Role, role)))
-            // .ToList();
 
+            claims.AddRange(jwtOptions.Audience.Select(aud => new Claim(JwtRegisteredClaimNames.Aud, aud)));
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key));
             var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-            var expiry = DateTime.UtcNow.AddMinutes(Convert.ToDouble(accessTokenExpirationinMinutes));
+            var expiry = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtOptions.AccessTokenExpirationInMinutes));
 
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: string.Join(",", audience),
+                issuer: jwtOptions.Issuer,
+                audience: jwtOptions.Audience.FirstOrDefault(),
                 claims: claims,
                 expires: expiry,
                 signingCredentials: credentials,
@@ -63,12 +58,9 @@ namespace ChatAPI.Services.Repository
             return (new JwtSecurityTokenHandler().WriteToken(token), expiry);
         }
 
-        public async Task<(RefreshToken, DateTime)> generateRefreshToken(User user, CancellationToken ct = default)
+        public async Task<(RefreshToken, DateTime)> generateRefreshToken(User user, string jwtToken, CancellationToken ct = default)
         {
-            var jwtSection = configuration.GetSection("JWT");
-            var refreshTokenExpirationInDays = jwtSection["RefreshTokenExpirationInDays"];
-
-            var expiry = DateTime.UtcNow.AddDays(Convert.ToDouble(refreshTokenExpirationInDays));
+            var expiry = DateTime.UtcNow.AddDays(Convert.ToDouble(jwtOptions.RefreshTokenExpirationInDays));
 
             var rawToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128));
             var hashToken = Sha256(rawToken);
@@ -77,7 +69,8 @@ namespace ChatAPI.Services.Repository
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
-                TokenHash = hashToken,
+                Refresh_Token_Hash = hashToken,
+                JWT_Token = jwtToken,
                 Created = DateTime.UtcNow,
                 Expires = expiry,
                 RawToken = rawToken
@@ -99,17 +92,92 @@ namespace ChatAPI.Services.Repository
         {
             var hash = Sha256(rawToken);
             return await context.RefreshTokens.AsNoTracking()
-            .AnyAsync(x => x.UserId == userID && x.TokenHash == hash && !x.IsExpired, ct);
+            .AnyAsync(x => x.UserId == userID && x.Refresh_Token_Hash == hash && !x.IsExpired, ct);
         }
         public async Task invalidateRefreshTokenAsync(Guid userID, string rawToken, CancellationToken ct = default)
         {
             var hash = Sha256(rawToken);
-            var entity = await context.RefreshTokens.FirstOrDefaultAsync(r => r.TokenHash == hash && r.UserId == userID, ct);
+            var entity = await context.RefreshTokens.FirstOrDefaultAsync(r => r.Refresh_Token_Hash == hash && r.UserId == userID, ct);
             if (entity != null)
             {
                 entity.Expires = DateTime.UtcNow.AddDays(-1);
                 await context.SaveChangesAsync(ct);
             }
+        }
+
+        public (bool isPresent, string refreshToken) isPresent()
+        {
+            var refreshToken = httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
+            return (refreshToken != null, refreshToken);
+        }
+
+        public async Task<RefreshToken> getRefreshTokenData(User user)
+        {
+            string refreshToken = httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
+            var refreshTokenDBData = await context.RefreshTokens.FirstOrDefaultAsync(x => x.Refresh_Token_Hash == Sha256(refreshToken) || x.UserId == user.Id);
+            return refreshTokenDBData;
+        }
+
+        public (ClaimsPrincipal? Principal, DateTime? Expiry, string? RawToken) JwtValidator()
+        {
+            string token = httpContextAccessor.HttpContext.Request.Cookies["accessToken"];
+            if (string.IsNullOrWhiteSpace(token))
+                return (null, null, null);
+
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token,
+                new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudiences = jwtOptions.Audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = validatedToken as JwtSecurityToken;
+                var expiry = jwtToken?.ValidTo;
+
+                return (principal, expiry, token);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "JWT validation failed in {MethodName}", nameof(JwtValidator));
+                return (null, null, null);
+            }
+        }
+
+        public async Task<(RefreshToken refreshToken, DateTime expiry)> updateRefreshTokenData(RefreshToken refreshTokenData, string? jwtToken, bool IsAuthenticated, CancellationToken ct = default)
+        {
+
+            var expiry = DateTime.UtcNow.AddDays(Convert.ToDouble(jwtOptions.RefreshTokenExpirationInDays));
+
+            var rawToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128));
+            var hashToken = Sha256(rawToken);
+            if (IsAuthenticated)
+            {
+                //update refresh token
+                refreshTokenData.Refresh_Token_Hash = hashToken;
+                refreshTokenData.RawToken = rawToken;
+                refreshTokenData.Expires = expiry;
+            }
+            else
+            {
+                //update both refresh token and jwt token
+                refreshTokenData.Refresh_Token_Hash = hashToken;
+                refreshTokenData.RawToken = rawToken;
+                refreshTokenData.Expires = expiry;
+                refreshTokenData.JWT_Token = jwtToken;
+            }
+
+            context.RefreshTokens.Update(refreshTokenData);
+            await context.SaveChangesAsync(cancellationToken: ct);
+            return (refreshTokenData, expiry);
         }
     }
 }

@@ -29,6 +29,7 @@ builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig.ReadFrom.Configuration(context.Configuration);
 });
 
+
 // Controller & JSON
 builder.Services.AddControllers()
 .ConfigureApiBehaviorOptions(options =>
@@ -211,6 +212,17 @@ builder.Services.AddSignalR();
 
 builder.Services.AddHttpContextAccessor();
 
+//Anti forgery
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-Token";
+    options.FormFieldName = "AntiforgeryFieldname";
+    options.SuppressXFrameOptionsHeader = false;
+});
+
+var jwtOptions = builder.Configuration.GetSection("JWT").Get<JwtOptions>();
+builder.Services.AddSingleton(jwtOptions);
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -230,10 +242,6 @@ app.UseSerilogRequestLogging();
 app.UseCors("APICORS");
 app.UseResponseCompression();
 app.UseHttpsRedirection();
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UseHsts();
-// }
 app.UseResponseCaching();
 app.UseRateLimiter();
 
@@ -242,7 +250,6 @@ app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 app.UseAuthorization();
-// app.UseMiddleware<TokenVerification>();
 app.MapControllers().RequireRateLimiting("ip-sliding");
 app.MapHub<ChatHub>("/chat").RequireRateLimiting("ip-sliding");
 app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions

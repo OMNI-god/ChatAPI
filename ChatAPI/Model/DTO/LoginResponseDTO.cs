@@ -9,5 +9,6 @@
         public string refreshToken { get; set; }
         public DateTime tokenExpiry { get; set; }
         public DateTime refreshTokenExpiry { get; set; }
+        public string CsrfToken { get; set; }
     }
 }
