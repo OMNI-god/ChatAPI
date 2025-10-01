@@ -3,6 +3,7 @@ using System;
 using ChatAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatAPI.Migrations
 {
     [DbContext(typeof(AppAuthDbContext))]
-    partial class AppAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251001125113_Updated refresh token model2")]
+    partial class Updatedrefreshtokenmodel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

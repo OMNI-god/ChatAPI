@@ -33,9 +33,9 @@ namespace ChatAPI.Context
             modelBuilder.Entity<RefreshToken>()
                 .HasIndex(rt => rt.UserId);
             modelBuilder.Entity<RefreshToken>()
-                .HasIndex(rt => rt.TokenHash);
+                .HasIndex(rt => rt.Refresh_Token_Hash);
             modelBuilder.Entity<RefreshToken>()
-                .HasIndex(rt => new { rt.UserId, rt.TokenHash });
+                .HasIndex(rt => new { rt.UserId, rt.Refresh_Token_Hash });
 
             //add indexing to user
             modelBuilder.Entity<User>()

@@ -3,6 +3,7 @@ using System;
 using ChatAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatAPI.Migrations
 {
     [DbContext(typeof(AppAuthDbContext))]
-    partial class AppAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250930162220_Updated refresh toke model")]
+    partial class Updatedrefreshtokemodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,6 +88,7 @@ namespace ChatAPI.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP + interval '30 days'");
 
                     b.Property<string>("JWT_Token")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Refresh_Token_Hash")

@@ -1,12 +1,9 @@
-﻿using ChatAPI.Model;
+﻿using System.Threading.Tasks;
 using ChatAPI.Model.DTO;
 using ChatAPI.Services.IRepository;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SignalR_Test.ConnectionManager;
-using System.Net;
-using System.Text;
 
 namespace SignalR_Test.Controllers
 {
@@ -15,17 +12,18 @@ namespace SignalR_Test.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository userRepository;
+        private readonly IAntiforgery antiforgery;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IAntiforgery antiforgery)
         {
             this.userRepository = userRepository;
+            this.antiforgery = antiforgery;
         }
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
-            //throw new Exception("tesr");
-            var loginResponse = await userRepository.login(loginRequestDTO,HttpContext.RequestAborted);
+            var loginResponse = await userRepository.login(loginRequestDTO, HttpContext.RequestAborted);
             if (loginResponse != null)
             {
                 Response.Cookies.Append("accessToken", loginResponse.token, new CookieOptions
@@ -42,6 +40,9 @@ namespace SignalR_Test.Controllers
                     SameSite = SameSiteMode.None,
                     Expires = loginResponse.refreshTokenExpiry
                 });
+
+                AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(HttpContext);
+                loginResponse.CsrfToken = tokens.RequestToken;
 
                 return Ok(loginResponse);
             }
@@ -60,10 +61,12 @@ namespace SignalR_Test.Controllers
         }
         [HttpPost("logout")]
         [Authorize]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout([FromServices] IAntiforgery antiforgery)
         {
+            await antiforgery.ValidateRequestAsync(HttpContext);
             Response.Cookies.Delete("accessToken", new CookieOptions { Secure = true, SameSite = SameSiteMode.None });
             return NoContent();
         }
+
     }
 }
