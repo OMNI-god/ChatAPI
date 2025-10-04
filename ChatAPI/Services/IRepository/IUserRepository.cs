@@ -24,5 +24,6 @@ namespace ChatAPI.Services.IRepository
         /// </returns>
         ///</summary>
         Task<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO, CancellationToken ct = default);
+        Task<SearchUserResponseDTO> searchUser(SearchUserRequestDTO searchUser, CancellationToken ct = default);
     }
 }

@@ -169,5 +169,27 @@ namespace ChatAPI.Services.Repository
                 throw;
             }
         }
+
+        public async Task<SearchUserResponseDTO> searchUser(SearchUserRequestDTO searchUser, CancellationToken ct = default)
+        {
+            var query = userManager.Users.AsNoTrackingWithIdentityResolution().AsQueryable();
+            if (!string.IsNullOrEmpty(searchUser.userName_Email))
+            {
+                query = query.Where(user =>
+                user.Email.Contains(searchUser.userName_Email) ||
+                user.UserName.Contains(searchUser.userName_Email));
+            }
+
+            var users = await query
+            .Select(u => new UserData
+            {
+                UserId = u.Id,
+                UserName = u.UserName,
+                Email = u.Email
+            })
+            .ToListAsync();
+
+            return new SearchUserResponseDTO { SearchedUsers = users };
+        }
     }
 }
