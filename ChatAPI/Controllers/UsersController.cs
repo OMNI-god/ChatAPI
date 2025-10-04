@@ -67,7 +67,7 @@ namespace SignalR_Test.Controllers
             Response.Cookies.Delete("accessToken", new CookieOptions { Secure = true, SameSite = SameSiteMode.None });
             return NoContent();
         }
-        [HttpGet("searchUser")]
+        [HttpPost("searchUser")]
         [Authorize]
         public async Task<IActionResult> SearchUser([FromBody] SearchUserRequestDTO searchUserRequest)
         {
