@@ -237,6 +237,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting();
 app.UseMiddleware<GlobalExceptionHandling>();
 app.UseSerilogRequestLogging();
 app.UseCors("APICORS");

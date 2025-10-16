@@ -5,7 +5,7 @@ using SignalR_Test.ConnectionManager;
 
 namespace SignalR_Test.Hubs
 {
-    [Authorize]
+    // [Authorize]
     public class ChatHub(IConnectionManager _manager) : Hub<IChatClient>, IChatHub
     {
         private readonly IConnectionManager _manager = _manager;
