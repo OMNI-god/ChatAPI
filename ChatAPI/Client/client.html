@@ -1,91 +1,101 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SignalR Client</title>
     <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@7.0.5/dist/browser/signalr.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h2>Register and Login</h2>
     <div>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="register()">Register</button>
-        <button onclick="login()">Login</button>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="register()">Register</button>
+      <button onclick="login()">Login</button>
     </div>
     <h2>Chat</h2>
     <div>
-        <input type="text" id="user" placeholder="Your Name">
-        <input type="text" id="message" placeholder="Message">
-        <button onclick="sendMessage()">Send</button>
+      <input type="text" id="user" placeholder="Your Name" />
+      <input type="text" id="message" placeholder="Message" />
+      <button onclick="sendMessage()">Send</button>
     </div>
     <ul id="messages"></ul>
 
     <script>
-        let connection;
-        let token;
-        let userId;
+      let connection;
+      let token;
+      let userId;
 
-        const apiBaseUrl = "https://localhost:7038"; // Base URL of the API
+      const apiBaseUrl = "https://localhost:7038"; // Base URL of the API
 
-        async function register() {
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+      async function register() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-            const response = await fetch(`${apiBaseUrl}/api/Users/Register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            console.log(await response.json());
-            alert('Registered successfully!');
-        }
+        const response = await fetch(`${apiBaseUrl}/api/Users/Register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+        console.log(await response.json());
+        alert("Registered successfully!");
+      }
 
-        async function login() {
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+      async function login() {
+        const userName_email = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-            const response = await fetch(`${apiBaseUrl}/api/Users/Login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+        const response = await fetch(`${apiBaseUrl}/api/Users/Login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userName_email, password }),
+        });
 
-            const data = await response.json();
-            token = data.payload.token;
-            userId = data.payload.userId;
-            alert('Login successful!');
-            startSignalR();
-        }
+        const data = await response.json();
+        token = data.token;
+        userId = data.userId;
+        alert("Login successful!");
+        startSignalR();
+      }
 
-        async function startSignalR() {
-            connection = new signalR.HubConnectionBuilder()
-                .withUrl(`${apiBaseUrl}/chat?userId=${userId}`, { accessTokenFactory: () => token })
-                .build();
+      async function startSignalR() {
+        connection = new signalR.HubConnectionBuilder()
+          .withUrl(`${apiBaseUrl}/chat?userId=${userId}`, {
+            accessTokenFactory: () => token,
+          })
+          .build();
 
-            connection.on("ReceiveConnIDAsync", (connectionId) => {
-                console.log("Received connection ID from server:", connectionId);
-                // Optionally store or use the connection ID as needed
-            });
-            connection.on("ReceiveMessageAsync", (msg) => {
-                const li = document.createElement("li");
-                li.textContent = `${msg}`;
-                document.getElementById("messages").appendChild(li);
-            });
+        connection.on("OnConnectedAsync", (connectionId) => {
+          console.log("Received connection ID from server:", connectionId);
+          // Optionally store or use the connection ID as needed
+        });
+        connection.on("ReceiveConnIDAsync", (connectionId) => {
+          console.log("Received connection ID from server:", connectionId);
+          // Optionally store or use the connection ID as needed
+          const li = document.createElement("li");
+          li.textContent = `${connectionId}`;
+          document.getElementById("messages").appendChild(li);
+        });
+        connection.on("ReceiveMessageAsync", (msg) => {
+          const li = document.createElement("li");
+          li.textContent = `${msg}`;
+          document.getElementById("messages").appendChild(li);
+        });
 
-            await connection.start();
-            console.log("Connected to SignalR hub.");
-        }
+        await connection.start();
+        console.log("Connected to SignalR hub.");
+      }
 
-        async function sendMessage() {
-            const user = document.getElementById("user").value;
-            const message = document.getElementById("message").value;
-            await connection.invoke("SendMessageToAllAsync", JSON.stringify({ to:"",from:"",msg:message }));
-        }
+      async function sendMessage() {
+        const user = document.getElementById("user").value;
+        const message = document.getElementById("message").value;
+        await connection.invoke(
+          "SendMessageToAllAsync",
+          JSON.stringify({ to: "", from: userId, msg: message })
+        );
+      }
     </script>
-</body>
-
+  </body>
 </html>

@@ -11,6 +11,16 @@
         "Name": "userId",
         "Type": "System.Guid",
         "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -18,7 +28,7 @@
   {
     "ContainingType": "SignalR_Test.Controllers.UsersController",
     "Method": "Login",
-    "RelativePath": "api/Users/Login",
+    "RelativePath": "api/Users/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -29,12 +39,32 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": [
+      {
+        "Type": "ChatAPI.Model.DTO.LoginResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SignalR_Test.Controllers.UsersController",
+    "Method": "Logout",
+    "RelativePath": "api/Users/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
     "ContainingType": "SignalR_Test.Controllers.UsersController",
     "Method": "Register",
-    "RelativePath": "api/Users/Register",
+    "RelativePath": "api/Users/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -42,6 +72,32 @@
       {
         "Name": "registerRequestDTO",
         "Type": "ChatAPI.Model.DTO.RegisterRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ChatAPI.Model.DTO.RegisterRequestDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SignalR_Test.Controllers.UsersController",
+    "Method": "SearchUser",
+    "RelativePath": "api/Users/searchUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "searchUserRequest",
+        "Type": "ChatAPI.Model.DTO.SearchUserRequestDTO",
         "IsRequired": true
       }
     ],

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using SignalR_Test.ConnectionManager;
 using SignalR_Test.Hubs;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -108,6 +109,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddSingleton<IConnectionManager, ConnectionManager>();
 
 // CORS
 builder.Services.AddCors(options =>
@@ -237,6 +239,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting();
 app.UseMiddleware<GlobalExceptionHandling>();
 app.UseSerilogRequestLogging();
 app.UseCors("APICORS");

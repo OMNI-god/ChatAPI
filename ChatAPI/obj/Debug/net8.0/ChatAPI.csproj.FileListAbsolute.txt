@@ -280,3 +280,9 @@ D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20250828.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20250829.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20250930.json
 D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251001.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251002.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251003.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251004.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251005.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251017.json
+D:\C#\ChatAPI\ChatAPI\bin\Debug\net8.0\Logs\API-log-20251018.json

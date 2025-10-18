@@ -5,13 +5,14 @@ using SignalR_Test.ConnectionManager;
 
 namespace SignalR_Test.Hubs
 {
-    [Authorize]
+    // [Authorize]
     public class ChatHub : Hub<IChatClient>, IChatHub
     {
         private readonly IConnectionManager _manager;
-        public ChatHub(IConnectionManager _manager)
+
+        public ChatHub(IConnectionManager manager)
         {
-            this._manager = _manager;
+            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
         }
         public override async Task OnConnectedAsync()
         {

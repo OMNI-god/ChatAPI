@@ -18,6 +18,24 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
           }
         ],
         "responses": {
@@ -27,7 +45,7 @@
         }
       }
     },
-    "/api/Users/Login": {
+    "/api/Users/login": {
       "post": {
         "tags": [
           "Users"
@@ -53,12 +71,29 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTO"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/Users/Register": {
+    "/api/Users/register": {
       "post": {
         "tags": [
           "Users"
@@ -78,6 +113,66 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RegisterRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequestDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequestDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequestDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/searchUser": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchUserRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchUserRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchUserRequestDTO"
               }
             }
           }
@@ -133,18 +228,57 @@
     "schemas": {
       "LoginRequestDTO": {
         "required": [
-          "password"
+          "password",
+          "userName_email"
         ],
         "type": "object",
         "properties": {
           "userName_email": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "password": {
             "minLength": 1,
             "type": "string",
             "format": "password"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginResponseDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "tokenExpiry": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshTokenExpiry": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "csrfToken": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -176,6 +310,16 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SearchUserRequestDTO": {
+        "type": "object",
+        "properties": {
+          "userName_Email": {
+            "type": "string",
             "nullable": true
           }
         },
