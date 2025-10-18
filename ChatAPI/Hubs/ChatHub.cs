@@ -6,10 +6,14 @@ using SignalR_Test.ConnectionManager;
 namespace SignalR_Test.Hubs
 {
     // [Authorize]
-    public class ChatHub(IConnectionManager _manager) : Hub<IChatClient>, IChatHub
+    public class ChatHub : Hub<IChatClient>, IChatHub
     {
-        private readonly IConnectionManager _manager = _manager;
+        private readonly IConnectionManager _manager;
 
+        public ChatHub(IConnectionManager manager)
+        {
+            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        }
         public override async Task OnConnectedAsync()
         {
             string userId = Context.GetHttpContext().Request.Query["userId"];
