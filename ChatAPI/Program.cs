@@ -209,7 +209,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// SignalR
+// SignalR demo
 builder.Services.AddSignalR();
 
 builder.Services.AddHttpContextAccessor();
